@@ -10,7 +10,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h> 
-#define TAM 256
+#define TAM 2048
 
 int main( int argc, char *argv[] ) {
 	int sockfd, puerto, n;
@@ -68,6 +68,7 @@ int main( int argc, char *argv[] ) {
 			perror( "lectura de socket" );
 			exit( 1 );
 		}
+
 		printf( "Respuesta: %s\n", buffer );
 		if( terminar ) {
 			printf( "Finalizando ejecución\n" );

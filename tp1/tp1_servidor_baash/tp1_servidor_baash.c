@@ -51,7 +51,8 @@ int main( int argc, char *argv[] ) {
 			perror( "accept" );
 			exit( 1 );
 		}
-
+		dup2(newsockfd, 1);// se desvia el STDOUT
+		dup2(newsockfd, 0);// se desvia el STDIN
 		pid = fork(); 
 		if ( pid < 0 ) {
 			perror( "fork" );
@@ -60,33 +61,34 @@ int main( int argc, char *argv[] ) {
 
 		if ( pid == 0 ) {  // Proceso hijo
 			close( sockfd );
+			
 
 			while ( 1 ) {
-				dup2(newsockfd, 1);// se desvia el STDOUT
-				dup2(newsockfd, 0);// se desvia el STDIN
+				
   				
-				memset( buffer, 0, TAM );
+				// memset( buffer, '\0', TAM );
 
-				n = read( newsockfd, buffer, TAM-1 );
-				if ( n < 0 ) {
-					perror( "lectura de socket" );
-					exit(1);
-				}
+				// n = read( newsockfd, buffer, TAM-1 );
+				// if ( n < 0 ) {
+				// 	perror( "lectura de socket" );
+				// 	exit(1);
+				// }
 
-				printf( "PROCESO %d. ", getpid() );
+				printf( "Server->PROCESO %d. ", getpid() );
 				printf( "Recibí: %s", buffer );
-				baash();
-				n = write( newsockfd, "Obtuve su mensaje", 18 );
-				if ( n < 0 ) {
-					perror( "escritura en socket" );
-					exit( 1 );
-				}
+				
+				// n = write( newsockfd, "Obtuve su mensaje", 18 );
+				// if ( n < 0 ) {
+				// 	perror( "escritura en socket" );
+				// 	exit( 1 );
+				// }
 				// Verificación de si hay que terminar
 				buffer[strlen(buffer)-1] = '\0';
 				if( !strcmp( "fin", buffer ) ) {
 					printf( "PROCESO %d. Como recibí 'fin', termino la ejecución.\n\n", getpid() );
 					exit(0);
 				}
+				baash();
 			}
 		}
 		else {
