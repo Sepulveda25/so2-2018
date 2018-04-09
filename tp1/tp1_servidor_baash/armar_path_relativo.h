@@ -1,0 +1,1 @@
+void armar_path_relativo(char *camino,char *prefix);
