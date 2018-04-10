@@ -74,6 +74,15 @@ int main( int argc, char *argv[] ) {
 			printf( "Finalizando ejecución\n" );
 			exit(0);
 		}
+
+		memset( buffer, '\0', TAM );
+		n = read( sockfd, buffer, TAM );
+		if ( n < 0 ) {
+			perror( "lectura de socket" );
+			exit( 1 );
+		}
+		printf( "Respuesta: %s\n", buffer );
+
 	}
 	return 0;
 } 
