@@ -98,7 +98,7 @@ int main( int argc, char *argv[] ) {
 			}
 		}
 		else {
-			printf( "SERVIDOR: Nuevo cliente, que atiende el proceso hijo: %d\n", pid );
+			//printf( "SERVIDOR: Nuevo cliente, que atiende el proceso hijo: %d\n", pid );
 			close( newsockfd );
 		}
 	}

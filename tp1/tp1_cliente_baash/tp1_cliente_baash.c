@@ -86,10 +86,19 @@ int main( int argc, char *argv[] ) {
 		// 	exit(0);
 		// }
 
+		memset( buffer, '\0', TAM ); 
+		n = read( sockfd, buffer, TAM ); // Recibo
+		if ( n < 0 ) {
+			perror( "lectura de socket" );
+			exit( 1 );
+		}
+		printf( "%s", buffer );/// se imprime promt()
+
+
 		memset( buffer, '\0', TAM );
 		fgets( buffer, TAM-1, stdin );
 
-		n = write( sockfd, buffer, strlen(buffer) );
+		n = write( sockfd, buffer, strlen(buffer) ); // Envio
 		if ( n < 0 ) {
 			perror( "escritura de socket" );
 			exit( 1 );
@@ -102,26 +111,25 @@ int main( int argc, char *argv[] ) {
 		}
 
 		memset( buffer, '\0', TAM );
-		n = read( sockfd, buffer, TAM );
+		n = read( sockfd, buffer, TAM ); // Recibo ejecucion de comando
 		if ( n < 0 ) {
 			perror( "lectura de socket" );
 			exit( 1 );
 		}
-
-
 		printf( "%s\n", buffer );
+		
 		if( terminar ) {
 			printf( "Finalizando ejecución\n" );
 			exit(0);
 		}
 
-		memset( buffer, '\0', TAM );
-		n = read( sockfd, buffer, TAM );
-		if ( n < 0 ) {
-			perror( "lectura de socket" );
-			exit( 1 );
-		}
-		printf( "%s", buffer );/// se imprime promt()
+		// memset( buffer, '\0', TAM ); 
+		// n = read( sockfd, buffer, TAM ); // Recibo
+		// if ( n < 0 ) {
+		// 	perror( "lectura de socket" );
+		// 	exit( 1 );
+		// }
+		// printf( "%s", buffer );/// se imprime promt()
 
 	}
 	return 0;
