@@ -89,6 +89,7 @@ int main( int argc, char *argv[] ) {
 				// }
 				// Verificación de si hay que terminar
 				baash(newsockfd);
+				printf("sali\n");
 				buffer[strlen(buffer)-1] = '\0';
 				if( !strcmp( "fin", buffer ) ) {
 					printf( "PROCESO %d. Como recibí 'fin', termino la ejecución.\n\n", getpid() );

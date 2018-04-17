@@ -28,6 +28,8 @@ int baash(int newsockfd) {
 	char* argumentos [BUFFSIZE+1];// = { "ls", "-l", "/usr/include", 0 };
 	char* argumentosEntrada [BUFFSIZE+1];
     char* argumentosSalida [BUFFSIZE+1];
+    char posicion[BUFFSIZE+1];
+    char hostname[BUFFSIZE+1];
 	pid_t child_pid;
 	int status;
 	int fd;
@@ -35,15 +37,22 @@ int baash(int newsockfd) {
 	int n=0;
 
 	dup2(newsockfd, 1);// se desvia el STDOUT
-	// dup2(newsockfd, 0);// se desvia el STDIN
+	dup2(newsockfd, 0);// se desvia el STDIN
 
 	while(1){
 		int operacion=0;
 		int comando;
 		int i=0;
 		
-		while (strlen(entrada)==0){ // control ingreso de enter solo
-			prompt();
+		while (strlen(entrada)==1){ // control ingreso de enter solo
+			//prompt();
+			memset(posicion, '\0', BUFFSIZE );
+			//direccion actual de pwd
+			getcwd(posicion,sizeof(posicion));
+			//Se obtiene el nombre de Host
+			gethostname(hostname, BUFFSIZE+1);
+			printf("@%s:%s$ ",hostname, posicion);
+			
 			fflush(0);
 			// memset( buffer, '\0', BUFFSIZE );
 			// n = read( newsockfd, buffer, BUFFSIZE-1 );

@@ -103,6 +103,7 @@ int main( int argc, char *argv[] ) {
 			exit(0);
 		}
 
+		printf(entrada_parseada[1]);
 		memset( buffer, '\0', TAM ); 
 		n = read( sockfd, buffer, TAM ); // Recibo
 		if ( n < 0 ) {
