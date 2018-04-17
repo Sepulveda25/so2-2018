@@ -122,6 +122,13 @@ int main( int argc, char *argv[] ) {
 			exit( 1 );
 		}
 
+		memset( buffer, '\0', TAM ); 
+		n = read( sockfd, buffer, TAM ); // Recibo
+		if ( n < 0 ) {
+			perror( "lectura de socket" );
+			exit( 1 );
+		}
+		printf( "%s", buffer ); // Recibo ejecucion de comando
 		// // Verificando si se escribió: fin
 		// buffer[strlen(buffer)-1] = '\0';
 		// if( !strcmp( "fin", buffer ) ) {
@@ -129,7 +136,7 @@ int main( int argc, char *argv[] ) {
 		// }
 
 		// memset( buffer, '\0', TAM );
-		// n = read( sockfd, buffer, TAM ); // Recibo ejecucion de comando
+		// n = read( sockfd, buffer, TAM ); 
 		// if ( n < 0 ) {
 		// 	perror( "lectura de socket" );
 		// 	exit( 1 );
