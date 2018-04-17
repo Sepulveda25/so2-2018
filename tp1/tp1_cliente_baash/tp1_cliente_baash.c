@@ -27,42 +27,58 @@ int main( int argc, char *argv[] ) {
 	char* entrada_parseada[TAM];
 	char entrada[TAM];
 	char buffer[TAM];
-	if ( argc < 3 ) {
-		fprintf( stderr, "Uso %s host puerto\n", argv[0]);
+
+	printf( "\nPara establecer conexion con el servidor debe ingresar: connect usuario@numero_ip:port\n" );
+	memset( entrada, '\0', TAM );// se coloca un \0 en entrada en la pocision al final de entrada
+	///\par Se le pide al usuario que ingrese connect seguido por usuario@numero_ip:puerto 
+	// fgets( entrada, TAM-1, stdin );//se lee el archivo stdin (lee lo que se ingreso) y se copia en entrada DESCOMENTAR
+
+	strcpy(entrada,"connect sepulveda@192.168.0.6:6020");//SOLO PARA PRUEBA DESCOMENTAR ARRIBA Y ABAJO
+	// entrada[strlen(entrada)-1] = '\0';// se elimina el \n que es introducido por el usuario cuando preciona "enter" DESCOMENTAR
+	longitud=parsear_entrada(entrada,entrada_parseada," @:");
+
+	while( strcmp( "connect", entrada_parseada[0]) ){
+			printf( "\nComando desconocido debe ingresar connect seguido usuario@numero_ip:puerto del AWS" );
+			printf( "\nCOP: " );
+			memset( entrada, '\0', TAM );// se coloca un \0 en entrada en la pocision al final de entrada
+			fgets( entrada, TAM-1, stdin );//se lee el archivo stdin (lee lo que se ingreso) y se copia en entrada 
+			entrada[strlen(entrada)-1] = '\0';// se elimina el \n que es introducido por el usuario cuando preciona "enter"
+			longitud=parsear_entrada(entrada,entrada_parseada," @:");
+			
+	}
+
+	if ( longitud < 2 ) {
+		fprintf( stderr, "Direccion IPv4 inválida.\n");
 		exit( 0 );
 	}
-	///////////////////******************CONEXION***************************
-	// printf( "\nCOP: " );
-	// memset( entrada, '\0', TAM );// se coloca un \0 en entrada en la pocision al final de entrada
-	// ///\par Se le pide al usuario que ingrese connect seguido por usuario@numero_ip:puerto 
-	// fgets( entrada, TAM-1, stdin );//se lee el archivo stdin (lee lo que se ingreso) y se copia en entrada 
-	
-	// // strcpy(entrada,"connect sepulveda@192.168.0.4:6020");//SOLO PARA PRUEBA DESCOMENTAR ARRIBA
-	// entrada[strlen(entrada)-1] = '\0';// se elimina el \n que es introducido por el usuario cuando preciona "enter"
-	// longitud=parsear_entrada(entrada,entrada_parseada," @:");
-	
-	// while( strcmp( "connect", entrada_parseada[0]) ){
-	// 		printf( "\nComando desconocido debe ingresar connect seguido usuario@numero_ip:puerto del AWS" );
-	// 		printf( "\nCOP: " );
-	// 		memset( entrada, '\0', TAM );// se coloca un \0 en entrada en la pocision al final de entrada
-	// 		fgets( entrada, TAM-1, stdin );//se lee el archivo stdin (lee lo que se ingreso) y se copia en entrada 
-	// 		entrada[strlen(entrada)-1] = '\0';// se elimina el \n que es introducido por el usuario cuando preciona "enter"
-	// 		longitud=parsear_entrada(entrada,entrada_parseada," @:");
-			
+	// if ( argc < 3 ) {
+	// 	fprintf( stderr, "Uso %s host puerto\n", argv[0]);
+	// 	exit( 0 );
 	// }
-	///////////////********************************************************************************************
-	puerto = atoi( argv[2] );
+
+	// puerto = atoi( argv[2] );
+	// sockfd = socket( AF_INET, SOCK_STREAM, 0 );
+	// if ( sockfd < 0 ) {
+	// 	perror( "ERROR apertura de socket" );
+	// 	exit( 1 );
+	// }
+	puerto = atoi(entrada_parseada[3]); //numero de puerto
 	sockfd = socket( AF_INET, SOCK_STREAM, 0 );
 	if ( sockfd < 0 ) {
 		perror( "ERROR apertura de socket" );
 		exit( 1 );
 	}
 
-	server = gethostbyname( argv[1] );
+	server = gethostbyname( entrada_parseada[2] ); // numero de IP 
 	if (server == NULL) {
 		fprintf( stderr,"Error, no existe el host\n" );
 		exit( 0 );
 	}
+	// server = gethostbyname( argv[1] );
+	// if (server == NULL) {
+	// 	fprintf( stderr,"Error, no existe el host\n" );
+	// 	exit( 0 );
+	// }
 	memset( (char *) &serv_addr, '0', sizeof(serv_addr) );
 	serv_addr.sin_family = AF_INET;
 	bcopy( (char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length );
@@ -71,20 +87,21 @@ int main( int argc, char *argv[] ) {
 		perror( "conexion" );
 		exit( 1 );
 	}
-
+	///\par Se le indica al usuario cliente que la conexión esta establecida
+	printf( "USUARIO %s. Conectado a server de direccion: %s  en puerto: 6020.\n",entrada_parseada[1], entrada_parseada[2]); 
 	while(1) {
 		// printf( "Ingrese el mensaje a transmitir: " );
 
-		// ///\par Se llama a la funcion autenticacion.
-		// while(autenticacion==0){
-		// 	autenticacion=autenticar(sockfd,entrada_parseada[1]);
-		// }
-		// ///\par Si fallo la acutenticion se cierra la aplicacion cliente
-		// if (autenticacion==-1){
-		// 	printf( "Supero el numero de intentos pemitidos\n" );
-		// 	close(sockfd);
-		// 	exit(0);
-		// }
+		///\par Se llama a la funcion autenticacion.
+		while(autenticacion==0){
+			autenticacion=autenticar(sockfd,entrada_parseada[1]);
+		}
+		///\par Si fallo la acutenticion se cierra la aplicacion cliente
+		if (autenticacion==-1){
+			printf( "Supero el numero de intentos pemitidos\n" );
+			close(sockfd);
+			exit(0);
+		}
 
 		memset( buffer, '\0', TAM ); 
 		n = read( sockfd, buffer, TAM ); // Recibo
@@ -104,24 +121,24 @@ int main( int argc, char *argv[] ) {
 			exit( 1 );
 		}
 
-		// Verificando si se escribió: fin
-		buffer[strlen(buffer)-1] = '\0';
-		if( !strcmp( "fin", buffer ) ) {
-			terminar = 1;
-		}
+		// // Verificando si se escribió: fin
+		// buffer[strlen(buffer)-1] = '\0';
+		// if( !strcmp( "fin", buffer ) ) {
+		// 	terminar = 1;
+		// }
 
-		memset( buffer, '\0', TAM );
-		n = read( sockfd, buffer, TAM ); // Recibo ejecucion de comando
-		if ( n < 0 ) {
-			perror( "lectura de socket" );
-			exit( 1 );
-		}
-		printf( "%s\n", buffer );
+		// memset( buffer, '\0', TAM );
+		// n = read( sockfd, buffer, TAM ); // Recibo ejecucion de comando
+		// if ( n < 0 ) {
+		// 	perror( "lectura de socket" );
+		// 	exit( 1 );
+		// }
+		// printf( "%s\n", buffer );
 		
-		if( terminar ) {
-			printf( "Finalizando ejecución\n" );
-			exit(0);
-		}
+		// if( terminar ) {
+		// 	printf( "Finalizando ejecución\n" );
+		// 	exit(0);
+		// }
 
 		// memset( buffer, '\0', TAM ); 
 		// n = read( sockfd, buffer, TAM ); // Recibo
@@ -130,11 +147,10 @@ int main( int argc, char *argv[] ) {
 		// 	exit( 1 );
 		// }
 		// printf( "%s", buffer );/// se imprime promt()
-
+		
 	}
 	return 0;
 } 
-
 
 /*!
   \param entrada es la cadena que se quiere parsear.
@@ -168,10 +184,11 @@ int parsear_entrada(char *entrada,char *entrada_parseada[],char *caracteres){ //
 int autenticar(int sockfd,char *usuario){
 	char entrada[TAM],buffer_receptor[TAM],concatenar[TAM];
 	int n;
-	printf( "Usuario: %s\nIngrese la clave\nCOP: ", usuario);
+	printf( "Usuario: %s\nIngrese la clave: ", usuario);
 	strcpy(concatenar,usuario);
 	/// Se le pide al usuario que ingrese la clave correspondiete
 	fgets( entrada, TAM, stdin );//se lee el archivo stdin (lee lo que se ingreso) y se copia en entrada 
+
 	strcat(concatenar,",");
 	/// Se concatena la el nombre de usuario con la clave y se le da el formato para ser leido por el destino.
 	strcat(concatenar,entrada);
@@ -190,6 +207,7 @@ int autenticar(int sockfd,char *usuario){
 	}
 	/// - Si es "ok" significa que la clave ingresada fue correcta.
 	if( !strcmp( "ok", buffer_receptor) ){
+		printf("\nIngreso con exito\n");
 		return 1; 
 	}
 	/// - Si es "superoIntentos" significa que finalizo la autenticacion por superar la cantidad de intentos

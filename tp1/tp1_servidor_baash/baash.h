@@ -1,1 +1,1 @@
-int baash();
+int baash(int newsockfd);

@@ -52,8 +52,8 @@ int main( int argc, char *argv[] ) {
 			perror( "accept" );
 			exit( 1 );
 		}
-		dup2(newsockfd, 1);// se desvia el STDOUT
-		dup2(newsockfd, 0);// se desvia el STDIN
+		// dup2(newsockfd, 1);// se desvia el STDOUT
+		// dup2(newsockfd, 0);// se desvia el STDIN
 		pid = fork(); 
 		if ( pid < 0 ) {
 			perror( "fork" );
@@ -63,17 +63,16 @@ int main( int argc, char *argv[] ) {
 		if ( pid == 0 ) {  // Proceso hijo
 			close( sockfd );
 			// ///\par Se realiza la autenticacion. Espera la contraseña por parte del usuario. Solo tiene cuatro intentos.
-			// autenticacion=autenticar(newsockfd);
+			autenticacion=autenticar(newsockfd);
 
 			while ( 1 ) {
 				
-  		// 		if(autenticacion==0){
-				// 	printf( "PROCESO %d. Se supero los intentos de autenticacion, termino la ejecución.\n\n", getpid() );
-				// 	close( sockfd );close( newsockfd );
-				// 	exit(0);
-				// }
+  				if(autenticacion==0){
+					printf( "PROCESO %d. Se supero los intentos de autenticacion, termino la ejecución.\n\n", getpid() );
+					close( sockfd );close( newsockfd );
+					exit(0);
+				}
 				// memset( buffer, '\0', TAM );
-
 				// n = read( newsockfd, buffer, TAM-1 );
 				// if ( n < 0 ) {
 				// 	perror( "lectura de socket" );
@@ -89,12 +88,13 @@ int main( int argc, char *argv[] ) {
 				// 	exit( 1 );
 				// }
 				// Verificación de si hay que terminar
+				baash(newsockfd);
 				buffer[strlen(buffer)-1] = '\0';
 				if( !strcmp( "fin", buffer ) ) {
 					printf( "PROCESO %d. Como recibí 'fin', termino la ejecución.\n\n", getpid() );
 					exit(0);
 				}
-				baash();
+				
 			}
 		}
 		else {

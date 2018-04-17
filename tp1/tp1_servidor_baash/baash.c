@@ -22,7 +22,7 @@ int operadores(char *argumentos[]);
 void buscar_path_ejecutar(char *camino,char *argumentos[]);
 
 
-int baash() { 
+int baash(int newsockfd) { 
 	char entrada[BUFFSIZE+1];
 	char fichero[BUFFSIZE+1]; 
 	char* argumentos [BUFFSIZE+1];// = { "ls", "-l", "/usr/include", 0 };
@@ -32,15 +32,25 @@ int baash() {
 	int status;
 	int fd;
 	int pipe_fds[2];
+	int n=0;
+
+	dup2(newsockfd, 1);// se desvia el STDOUT
+	// dup2(newsockfd, 0);// se desvia el STDIN
 
 	while(1){
 		int operacion=0;
 		int comando;
 		int i=0;
 		
-		while (strlen(entrada)==1){ // control ingreso de enter solo
+		while (strlen(entrada)==0){ // control ingreso de enter solo
 			prompt();
 			fflush(0);
+			// memset( buffer, '\0', BUFFSIZE );
+			// n = read( newsockfd, buffer, BUFFSIZE-1 );
+			// if ( n < 0 ) {
+			// 	perror( "lectura de socket" );
+			// 	exit(1);
+			// }
 			fgets(entrada,sizeof(entrada),stdin);
 		}
         entrada[strlen(entrada)-1]='\0';
@@ -211,8 +221,9 @@ void buscar_path_ejecutar(char *camino,char *argumentos[]){
 	else {
 		// printf("\nPATH ver en $PATH");
 		buscar_en_PATH(camino,prefix);                     // comando solo como date. hay que buscar ruta en $PATH
-		// printf("\nprefix:%s\n", prefix);                
-        execv (prefix, argumentos);
+		// printf("\nprefix:%s\n", prefix); 
+		if (strlen(prefix)!=0)               
+        	execv (prefix, argumentos);
 	}	
 	return;
 }
