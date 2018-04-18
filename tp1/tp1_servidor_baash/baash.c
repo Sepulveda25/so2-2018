@@ -43,6 +43,8 @@ int baash(int newsockfd) {
 		int operacion=0;
 		int comando;
 		int i=0;
+		// memset(entrada, '\0', BUFFSIZE );
+		// printf("strlen(entrada)=%d\n", strlen(entrada));
 		
 		while (strlen(entrada)==1){ // control ingreso de enter solo
 			//prompt();
@@ -51,15 +53,10 @@ int baash(int newsockfd) {
 			getcwd(posicion,sizeof(posicion));
 			//Se obtiene el nombre de Host
 			gethostname(hostname, BUFFSIZE+1);
-			printf("@%s:%s$ ",hostname, posicion);
+			printf("@%s:%s$  ",hostname, posicion);
 			
 			fflush(0);
-			// memset( buffer, '\0', BUFFSIZE );
-			// n = read( newsockfd, buffer, BUFFSIZE-1 );
-			// if ( n < 0 ) {
-			// 	perror( "lectura de socket" );
-			// 	exit(1);
-			// }
+		
 			fgets(entrada,sizeof(entrada),stdin);
 		}
         entrada[strlen(entrada)-1]='\0';
@@ -95,10 +92,13 @@ int baash(int newsockfd) {
 			if(strcmp(argumentos[0],"cd")==0){ // se fija si es el comando cd
 				if(chdir(argumentos[1])==-1){
 					printf("No existe el fichero ó directorio \n");
+				}else{
+					printf(" \n");
 				}
+				// exit(0);
 			}else{
 				if(operacion==2){ // redireccionar la entrada
-					// printf("\n*** Redireccionar la entrada ***");
+					printf("*** Redireccionar la entrada ***");
 					close (0); //0 	Standard Input (stdin) 
 					fd = open (argumentos[i-1], O_RDONLY);
 					if (fd == -1) {
@@ -111,7 +111,7 @@ int baash(int newsockfd) {
 					close (fd);
 				} 
 				else if(operacion==3){ // redireccionar la salida
-					// printf("\n*** Redireccionar la salida ***");
+					printf("\n*** Redireccionar la salida ***");
 					close (1); //1 	Standard Output (stdout) 
 					fd = open (argumentos[i-1], O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
 					if (fd == -1) {
@@ -144,7 +144,9 @@ int baash(int newsockfd) {
 
 				}
 				else{ // ejecucion normal
+					// printf("Pase por ejecucion normal");
 					buscar_path_ejecutar(fichero,argumentos);
+					exit(0);
 				}
 				
 
@@ -202,6 +204,7 @@ int operadores(char *argumentos[]){
 ///Se identifica que tipo de path es (absoluto, relativo, etc)
 void buscar_path_ejecutar(char *camino,char *argumentos[]){
     char prefix[BUFFSIZE+1] = "";
+    memset(prefix, '\0', BUFFSIZE);
     // printf("argumento: %s\n",*(argumentos+1) );
 
 	if(*(camino)=='/'){
@@ -230,9 +233,19 @@ void buscar_path_ejecutar(char *camino,char *argumentos[]){
 	else {
 		// printf("\nPATH ver en $PATH");
 		buscar_en_PATH(camino,prefix);                     // comando solo como date. hay que buscar ruta en $PATH
-		// printf("\nprefix:%s\n", prefix); 
-		if (strlen(prefix)!=0)               
-        	execv (prefix, argumentos);
+		// printf("\nprefix es :%d", strlen(prefix));
+		// if ((strlen(prefix))==0){
+			
+			// printf("No existe comando");
+			// exit(0);
+		// }
+		// else{
+			
+			execv (prefix, argumentos);
+
+			
+		// }               
+        	
 	}	
 	return;
 }

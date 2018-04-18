@@ -110,12 +110,12 @@ int main( int argc, char *argv[] ) {
 			perror( "lectura de socket" );
 			exit( 1 );
 		}
+		buffer[strlen(buffer)-1] = '\0';
 		printf( "%s", buffer );/// se imprime promt()
 
-
+		fflush(0);
 		memset( buffer, '\0', TAM );
 		fgets( buffer, TAM-1, stdin );
-
 		n = write( sockfd, buffer, strlen(buffer) ); // Envio
 		if ( n < 0 ) {
 			perror( "escritura de socket" );
@@ -128,6 +128,7 @@ int main( int argc, char *argv[] ) {
 			perror( "lectura de socket" );
 			exit( 1 );
 		}
+		buffer[strlen(buffer)-1] = '\n';
 		printf( "%s", buffer ); // Recibo ejecucion de comando
 		// // Verificando si se escribió: fin
 		// buffer[strlen(buffer)-1] = '\0';
