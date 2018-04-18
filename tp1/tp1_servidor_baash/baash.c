@@ -45,6 +45,8 @@ int baash(int newsockfd) {
 		int i=0;
 		// memset(entrada, '\0', BUFFSIZE );
 		// printf("strlen(entrada)=%d\n", strlen(entrada));
+		memset(entrada, '\0', BUFFSIZE );
+		strcpy(entrada," ");
 		
 		while (strlen(entrada)==1){ // control ingreso de enter solo
 			//prompt();
@@ -95,7 +97,6 @@ int baash(int newsockfd) {
 				}else{
 					printf(" \n");
 				}
-				// exit(0);
 			}else{
 				if(operacion==2){ // redireccionar la entrada
 					printf("*** Redireccionar la entrada ***");
@@ -144,9 +145,16 @@ int baash(int newsockfd) {
 
 				}
 				else{ // ejecucion normal
-					// printf("Pase por ejecucion normal");
-					buscar_path_ejecutar(fichero,argumentos);
-					exit(0);
+					// printf("Pase por ejecucion normal \n");
+					if(strlen(entrada)!=1){
+						buscar_path_ejecutar(fichero,argumentos);}
+					else{
+						exit(0);
+					}
+					// memset(entrada, '\0', BUFFSIZE );
+					// strcpy(entrada," ");
+					// printf("strlen(entrada)=%d \n", strlen(entrada));
+					// exit(0);
 				}
 				
 
@@ -203,8 +211,8 @@ int operadores(char *argumentos[]){
 
 ///Se identifica que tipo de path es (absoluto, relativo, etc)
 void buscar_path_ejecutar(char *camino,char *argumentos[]){
-    char prefix[BUFFSIZE+1] = "";
-    memset(prefix, '\0', BUFFSIZE);
+    char prefix[BUFFSIZE+1] = "-1";
+    // memset(prefix, '\0', BUFFSIZE);
     // printf("argumento: %s\n",*(argumentos+1) );
 
 	if(*(camino)=='/'){
@@ -234,17 +242,18 @@ void buscar_path_ejecutar(char *camino,char *argumentos[]){
 		// printf("\nPATH ver en $PATH");
 		buscar_en_PATH(camino,prefix);                     // comando solo como date. hay que buscar ruta en $PATH
 		// printf("\nprefix es :%d", strlen(prefix));
-		// if ((strlen(prefix))==0){
-			
-			// printf("No existe comando");
-			// exit(0);
-		// }
-		// else{
-			
+		if(strcmp(prefix,"-1")==0)
+		{
+			printf("No existe el comando\n");
+			// printf("este es verdadero\n" );
+			exit(0);
+		}
+		else
+		{
+			// printf("este es falso\n");
 			execv (prefix, argumentos);
-
-			
-		// }               
+			// exit(0);
+		}	             
         	
 	}	
 	return;
