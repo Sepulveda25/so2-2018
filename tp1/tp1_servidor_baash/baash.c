@@ -13,7 +13,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <fcntl.h>
-#define BUFFSIZE 256 
+#define BUFFSIZE 2048 
 #define READ 0
 #define WRITE 1
 
@@ -35,6 +35,7 @@ int baash(int newsockfd) {
 	int fd;
 	int pipe_fds[2];
 	int n=0;
+	int espacio;
 
 	dup2(newsockfd, 1);// se desvia el STDOUT
 	dup2(newsockfd, 0);// se desvia el STDIN
@@ -43,13 +44,13 @@ int baash(int newsockfd) {
 		int operacion=0;
 		int comando;
 		int i=0;
+		espacio=0;
 		// memset(entrada, '\0', BUFFSIZE );
 		// printf("strlen(entrada)=%d\n", strlen(entrada));
 		memset(entrada, '\0', BUFFSIZE );
 		strcpy(entrada," ");
 		
-		while (strlen(entrada)==1){ // control ingreso de enter solo
-			//prompt();
+		while ((strlen(entrada)==1)){//// control ingreso de enter solo
 			memset(posicion, '\0', BUFFSIZE );
 			//direccion actual de pwd
 			getcwd(posicion,sizeof(posicion));
@@ -99,7 +100,7 @@ int baash(int newsockfd) {
 				}
 			}else{
 				if(operacion==2){ // redireccionar la entrada
-					printf("*** Redireccionar la entrada ***");
+					// printf("*** Redireccionar la entrada ***");
 					close (0); //0 	Standard Input (stdin) 
 					fd = open (argumentos[i-1], O_RDONLY);
 					if (fd == -1) {
@@ -112,7 +113,7 @@ int baash(int newsockfd) {
 					close (fd);
 				} 
 				else if(operacion==3){ // redireccionar la salida
-					printf("\n*** Redireccionar la salida ***");
+					// printf("\n*** Redireccionar la salida ***");
 					close (1); //1 	Standard Output (stdout) 
 					fd = open (argumentos[i-1], O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
 					if (fd == -1) {
@@ -124,7 +125,7 @@ int baash(int newsockfd) {
 					buscar_path_ejecutar(fichero,argumentos);
 					close (fd);
 				}else if(operacion==4){ // pipe
-					printf("\n*** Pipe ***");
+					// printf("\n*** Pipe ***");
 					if (pipe (pipe_fds)){
       				 	fprintf (stderr, "Pipe failed.\n");
        					return EXIT_FAILURE;
@@ -147,14 +148,11 @@ int baash(int newsockfd) {
 				else{ // ejecucion normal
 					// printf("Pase por ejecucion normal \n");
 					if(strlen(entrada)!=1){
-						buscar_path_ejecutar(fichero,argumentos);}
+						buscar_path_ejecutar(fichero,argumentos);
+					}
 					else{
 						exit(0);
 					}
-					// memset(entrada, '\0', BUFFSIZE );
-					// strcpy(entrada," ");
-					// printf("strlen(entrada)=%d \n", strlen(entrada));
-					// exit(0);
 				}
 				
 

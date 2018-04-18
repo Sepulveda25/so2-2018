@@ -115,7 +115,14 @@ int main( int argc, char *argv[] ) {
 
 		fflush(0);
 		memset( buffer, '\0', TAM );
-		fgets( buffer, TAM-1, stdin );
+		fgets( buffer, sizeof(buffer), stdin );
+		// printf("tamaño %d\n", strlen(buffer));
+		if (strlen(buffer)==1){ //se detecta que se esta por enviar un caracter nulo
+			memset(buffer, '\0', TAM );
+			strcpy(buffer,"-1\n");
+
+		}
+		
 		n = write( sockfd, buffer, strlen(buffer) ); // Envio
 		if ( n < 0 ) {
 			perror( "escritura de socket" );
@@ -135,27 +142,6 @@ int main( int argc, char *argv[] ) {
 		// if( !strcmp( "fin", buffer ) ) {
 		// 	terminar = 1;
 		// }
-
-		// memset( buffer, '\0', TAM );
-		// n = read( sockfd, buffer, TAM ); 
-		// if ( n < 0 ) {
-		// 	perror( "lectura de socket" );
-		// 	exit( 1 );
-		// }
-		// printf( "%s\n", buffer );
-		
-		// if( terminar ) {
-		// 	printf( "Finalizando ejecución\n" );
-		// 	exit(0);
-		// }
-
-		// memset( buffer, '\0', TAM ); 
-		// n = read( sockfd, buffer, TAM ); // Recibo
-		// if ( n < 0 ) {
-		// 	perror( "lectura de socket" );
-		// 	exit( 1 );
-		// }
-		// printf( "%s", buffer );/// se imprime promt()
 		
 	}
 	return 0;
