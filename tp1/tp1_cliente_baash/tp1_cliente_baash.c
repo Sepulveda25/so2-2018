@@ -19,7 +19,7 @@ int parsear_entrada(char *entrada,char *entrada_parseada[],char *caracteres);
 int autenticar(int sockfd,char *usuario);
 
 int main( int argc, char *argv[] ) {
-	int sockfd, puerto, n;
+	int sockfd, puerto,sockfdUDP, n,fin=0;
 	struct sockaddr_in serv_addr;
 	struct hostent *server;
 	int terminar = 0;
@@ -27,6 +27,10 @@ int main( int argc, char *argv[] ) {
 	char* entrada_parseada[TAM];
 	char entrada[TAM];
 	char buffer[TAM];
+	char* buffer_parseado[TAM];
+	char buffer_axiliar[TAM];
+	char buffer_archivo[TAM+1];
+
 
 	printf( "\nPara establecer conexion con el servidor debe ingresar: connect usuario@numero_ip:port\n" );
 	memset( entrada, '\0', TAM );// se coloca un \0 en entrada en la pocision al final de entrada
@@ -128,20 +132,76 @@ int main( int argc, char *argv[] ) {
 			perror( "escritura de socket" );
 			exit( 1 );
 		}
+		strcpy(buffer_axiliar,buffer);
+		longitud=parsear_entrada(buffer_axiliar,buffer_parseado," ");// se parsea la entrada para buscar las variables
 
+		
 		memset( buffer, '\0', TAM ); 
 		n = read( sockfd, buffer, TAM ); // Recibo
 		if ( n < 0 ) {
 			perror( "lectura de socket" );
 			exit( 1 );
 		}
-		buffer[strlen(buffer)-1] = '\n';
+		buffer[strlen(buffer)] = '\n';
 		printf( "%s", buffer ); // Recibo ejecucion de comando
+
+		if((strcmp( "descarga", buffer_parseado[0]))==0){
+			FILE *datos;
+			datos = fopen(buffer_parseado[1], "w"); // se crea en el cliente un archivo con el nombre del archivo a descargar
+			if (datos == NULL) {	perror("File not found!\n");}
+			memset( buffer_archivo, '\0', TAM+1 );
+			fin=0;
+			
+			//*******************************************************************************************************
+			///Se copia el contenido del archivo recibido en un archivo 
+			struct sockaddr_in dest_addrUDP;
+			sockfdUDP = socket( AF_INET, SOCK_DGRAM, 0 );
+			if (sockfdUDP < 0)
+			{
+				perror( "apertura de socket" );
+				exit( 1 );
+			}
+			dest_addrUDP.sin_family = AF_INET;
+			dest_addrUDP.sin_port = htons(puerto);
+			dest_addrUDP.sin_addr = *( (struct in_addr *)server->h_addr );
+			memset( &(dest_addrUDP.sin_zero), '\0', 8 );
+			int tam_dir = sizeof(dest_addrUDP);
+			///\brief 		
+			n = sendto( sockfdUDP, (void *)"solicitud", 10, 0, (struct sockaddr *)&dest_addrUDP, tam_dir);
+			if ( n < 0 )
+			{
+				perror( "Escritura en socket" );
+				exit( 1 );
+			}
+			//Esperando respuesta
+			///Recibe respuesta del Server de que el archivo se transfirió correctamente
+			printf( "CREANDO ARCHIVO %s\n",buffer_parseado[1]);
+			while(!fin){
+				n = recvfrom( sockfdUDP, (void *)buffer_archivo, TAM, 0, (struct sockaddr *)&dest_addrUDP, &tam_dir);
+				if ( n < 0 ){perror( "Lectura de socket" );exit( 1 );}
+				// printf( "Respuesta: %s\n", buffer_archivo );
+				if( !strcmp( "finDeLectura", buffer_archivo) ){
+					fin=1;
+				}else{
+					n = fwrite(buffer_archivo, sizeof(char), strlen(buffer_archivo), datos);
+					if(n < 0){	printf("File not written!\n");}
+				}
+			}	
+			
+			//~ printf( "Respuesta: %s\n", buffer_archivo );
+			
+			//******************************************************
+			printf( "ARCHIVO %s CREADO\n",buffer_parseado[1]);
+			fclose(datos);
+
+		}
 		// // Verificando si se escribió: fin
 		// buffer[strlen(buffer)-1] = '\0';
 		// if( !strcmp( "fin", buffer ) ) {
 		// 	terminar = 1;
 		// }
+
+		
 		
 	}
 	return 0;

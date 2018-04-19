@@ -13,6 +13,8 @@
 #include <string.h>
 #include <sys/types.h>
 #include <fcntl.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 #define BUFFSIZE 2048 
 #define READ 0
 #define WRITE 1
@@ -30,16 +32,42 @@ int baash(int newsockfd) {
     char* argumentosSalida [BUFFSIZE+1];
     char posicion[BUFFSIZE+1];
     char hostname[BUFFSIZE+1];
+    char buffer[BUFFSIZE+1];
 	pid_t child_pid;
 	int status;
 	int fd;
 	int pipe_fds[2];
 	int n=0;
 	int espacio;
+	//Variable para socket UDP
+	int sockfdUDP,clilen;
+	int puerto = 6020;
+	//Variables de configuracion archivos
+	FILE *para_enviar;
+	char buffer_archivo[BUFFSIZE]; 	
+	
 
+	//***********************Cofiguracion Socket UDP*************************
+	struct sockaddr_in serv_addrUDP;
+	sockfdUDP = socket( AF_INET, SOCK_DGRAM, 0 );
+	if (sockfdUDP < 0) { 
+		perror("ERROR en apertura de socket");
+		exit( 1 );
+	}
+
+	memset( &serv_addrUDP, 0, sizeof(serv_addrUDP) );
+	serv_addrUDP.sin_family = AF_INET;
+	serv_addrUDP.sin_addr.s_addr = INADDR_ANY;
+	serv_addrUDP.sin_port = htons( puerto);
+	memset( &(serv_addrUDP.sin_zero), '\0', 8 );
+
+	if( bind( sockfdUDP, (struct sockaddr *) &serv_addrUDP, sizeof(serv_addrUDP) ) < 0 ) {
+		perror( "ERROR en binding" );
+		exit( 1 );
+	}
+	//********************************************************************************
 	dup2(newsockfd, 1);// se desvia el STDOUT
 	dup2(newsockfd, 0);// se desvia el STDIN
-
 	while(1){
 		int operacion=0;
 		int comando;
@@ -63,7 +91,6 @@ int baash(int newsockfd) {
 			fgets(entrada,sizeof(entrada),stdin);
 		}
         entrada[strlen(entrada)-1]='\0';
-		
 		// obtener_entrada(entrada,argumentos,fichero);
 
 		i=parsear_entrada(entrada,argumentos," ");
@@ -96,9 +123,48 @@ int baash(int newsockfd) {
 				if(chdir(argumentos[1])==-1){
 					printf("No existe el fichero ó directorio \n");
 				}else{
-					printf(" \n");
+					n = write( newsockfd, " \n", BUFFSIZE ); 
 				}
-			}else{
+			}else if(strcmp(argumentos[0],"descarga")==0){
+				// printf("se va a hacer una descarga\n");
+				// i=0;
+				/// Se avisa al destino que se esta preparando el archivo
+				// n = write( newsockfd, "Preparando archivo...", BUFFSIZE ); // respueta OBLIGATORIA
+				// if ( n < 0 ) {
+				// 	perror( "lectura de socket" );
+				// 	exit( 1 );
+				// }
+
+				printf("Preparando archivo %s....\n",argumentos[1]);
+				para_enviar = fopen(argumentos[1],"r"); 
+				// tamano_direccion = sizeof( struct sockaddr );
+				
+		
+				//******************** envio UDP********************************
+				
+				/// Se realiza la configuracion para envio por protocolo UDP
+				n = recvfrom( sockfdUDP, buffer, BUFFSIZE-1, 0, (struct sockaddr *)&serv_addrUDP, &clilen );
+				if ( n < 0 ) {
+					perror( "UDP lectura de socket" );
+					exit( 1 );
+				}
+				printf( "Recibí_UDP: %s\n", buffer );
+				/// Se comienza a leer el archivo y enviar los datos leidos
+				fgets(buffer_archivo, BUFFSIZE, para_enviar);
+				while (!feof (para_enviar)){
+					n = sendto( sockfdUDP, (void *)buffer_archivo, BUFFSIZE, 0, (struct sockaddr *)&serv_addrUDP, clilen  );
+					if ( n < 0 ) {perror( "escritura en socket" );exit( 1 );}
+					fgets(buffer_archivo, BUFFSIZE, para_enviar);		
+
+				}
+				/// Se avisa al destino que no hay mas datos por enviar
+				n = sendto( sockfdUDP, (void *)"finDeLectura", 13, 0, (struct sockaddr *)&serv_addrUDP, clilen);		
+			
+				//**************************************************************
+			
+				fclose(para_enviar); //se cierra el archivo
+			}
+			else{
 				if(operacion==2){ // redireccionar la entrada
 					// printf("*** Redireccionar la entrada ***");
 					close (0); //0 	Standard Input (stdin) 

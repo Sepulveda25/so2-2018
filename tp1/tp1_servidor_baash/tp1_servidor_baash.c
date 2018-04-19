@@ -14,11 +14,12 @@
 #define cantida_intentos 4
 
 int main( int argc, char *argv[] ) {
+	
+	//Variables de configuracion de socket
 	int sockfd, newsockfd, puerto, clilen, pid;
-	char buffer[TAM];
 	struct sockaddr_in serv_addr, cli_addr;
 	int n,autenticacion=0;
-
+	char buffer[TAM];
 	if ( argc < 2 ) {
         	fprintf( stderr, "Uso: %s <puerto>\n", argv[0] );
 		exit( 1 );
@@ -46,6 +47,7 @@ int main( int argc, char *argv[] ) {
 	listen( sockfd, 5 );
 	clilen = sizeof( cli_addr );
 
+	
 	while( 1 ) {
 		newsockfd = accept( sockfd, (struct sockaddr *) &cli_addr, &clilen );
 		if ( newsockfd < 0 ) {
