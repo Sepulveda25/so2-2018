@@ -128,14 +128,9 @@ int baash(int newsockfd,int clilen) {
 			}else if(strcmp(argumentos[0],"descarga")==0){
 				// printf("se va a hacer una descarga\n");
 				// i=0;
-				/// Se avisa al destino que se esta preparando el archivo
-				// n = write( newsockfd, "Preparando archivo...", BUFFSIZE ); // respueta OBLIGATORIA
-				// if ( n < 0 ) {
-				// 	perror( "lectura de socket" );
-				// 	exit( 1 );
-				// }
+				
 
-				printf("Preparando archivo %s....\n",argumentos[1]);
+				printf("Preparando archivo %s....\n",argumentos[1]); // respueta OBLIGATORIA
 				para_enviar = fopen(argumentos[1],"r"); 
 				// tamano_direccion = sizeof( struct sockaddr );
 				

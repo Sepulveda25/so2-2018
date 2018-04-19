@@ -30,6 +30,7 @@ int main( int argc, char *argv[] ) {
 	char* buffer_parseado[TAM];
 	char buffer_axiliar[TAM];
 	char buffer_archivo[TAM+1];
+	char nombre_archivo[TAM+1];
 
 
 	printf( "\nPara establecer conexion con el servidor debe ingresar: connect usuario@numero_ip:port\n" );
@@ -147,7 +148,10 @@ int main( int argc, char *argv[] ) {
 
 		if((strcmp( "descarga", buffer_parseado[0]))==0){
 			FILE *datos;
-			datos = fopen(buffer_parseado[1], "w"); // se crea en el cliente un archivo con el nombre del archivo a descargar
+			memset( nombre_archivo, '\0', TAM );
+			strcpy(nombre_archivo,buffer_parseado[1]);
+			nombre_archivo[strlen(nombre_archivo)-1]='\0'; // se quita el "enter" (\n) del nombre
+			datos = fopen(nombre_archivo, "w"); // se crea en el cliente un archivo con el nombre del archivo a descargar
 			if (datos == NULL) {	perror("File not found!\n");}
 			memset( buffer_archivo, '\0', TAM+1 );
 			fin=0;
