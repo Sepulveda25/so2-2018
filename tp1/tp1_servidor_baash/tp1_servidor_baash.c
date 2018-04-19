@@ -90,7 +90,7 @@ int main( int argc, char *argv[] ) {
 				// 	exit( 1 );
 				// }
 				// Verificación de si hay que terminar
-				baash(newsockfd);
+				baash(newsockfd,clilen);
 				printf("sali\n");
 				buffer[strlen(buffer)-1] = '\0';
 				if( !strcmp( "fin", buffer ) ) {

@@ -15,7 +15,7 @@
 #include <fcntl.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#define BUFFSIZE 2048 
+#define BUFFSIZE 1024 
 #define READ 0
 #define WRITE 1
 
@@ -24,7 +24,7 @@ int operadores(char *argumentos[]);
 void buscar_path_ejecutar(char *camino,char *argumentos[]);
 
 
-int baash(int newsockfd) { 
+int baash(int newsockfd,int clilen) { 
 	char entrada[BUFFSIZE+1];
 	char fichero[BUFFSIZE+1]; 
 	char* argumentos [BUFFSIZE+1];// = { "ls", "-l", "/usr/include", 0 };
@@ -33,6 +33,7 @@ int baash(int newsockfd) {
     char posicion[BUFFSIZE+1];
     char hostname[BUFFSIZE+1];
     char buffer[BUFFSIZE+1];
+    struct cli_addr;
 	pid_t child_pid;
 	int status;
 	int fd;
@@ -40,13 +41,12 @@ int baash(int newsockfd) {
 	int n=0;
 	int espacio;
 	//Variable para socket UDP
-	int sockfdUDP,clilen;
-	int puerto = 6020;
+	int sockfdUDP;
+	int puerto_udp = 6020;
 	//Variables de configuracion archivos
 	FILE *para_enviar;
 	char buffer_archivo[BUFFSIZE]; 	
 	
-
 	//***********************Cofiguracion Socket UDP*************************
 	struct sockaddr_in serv_addrUDP;
 	sockfdUDP = socket( AF_INET, SOCK_DGRAM, 0 );
@@ -58,7 +58,7 @@ int baash(int newsockfd) {
 	memset( &serv_addrUDP, 0, sizeof(serv_addrUDP) );
 	serv_addrUDP.sin_family = AF_INET;
 	serv_addrUDP.sin_addr.s_addr = INADDR_ANY;
-	serv_addrUDP.sin_port = htons( puerto);
+	serv_addrUDP.sin_port = htons( puerto_udp);
 	memset( &(serv_addrUDP.sin_zero), '\0', 8 );
 
 	if( bind( sockfdUDP, (struct sockaddr *) &serv_addrUDP, sizeof(serv_addrUDP) ) < 0 ) {
@@ -148,7 +148,7 @@ int baash(int newsockfd) {
 					perror( "UDP lectura de socket" );
 					exit( 1 );
 				}
-				printf( "Recibí_UDP: %s\n", buffer );
+				// printf( "Recibí_UDP: %s\n", buffer );
 				/// Se comienza a leer el archivo y enviar los datos leidos
 				fgets(buffer_archivo, BUFFSIZE, para_enviar);
 				while (!feof (para_enviar)){

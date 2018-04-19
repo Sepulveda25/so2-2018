@@ -19,7 +19,7 @@ int parsear_entrada(char *entrada,char *entrada_parseada[],char *caracteres);
 int autenticar(int sockfd,char *usuario);
 
 int main( int argc, char *argv[] ) {
-	int sockfd, puerto,sockfdUDP, n,fin=0;
+	int sockfd, puerto,puerto_udp,sockfdUDP, n,fin=0;
 	struct sockaddr_in serv_addr;
 	struct hostent *server;
 	int terminar = 0;
@@ -151,7 +151,7 @@ int main( int argc, char *argv[] ) {
 			if (datos == NULL) {	perror("File not found!\n");}
 			memset( buffer_archivo, '\0', TAM+1 );
 			fin=0;
-			
+			puerto_udp=6020;
 			//*******************************************************************************************************
 			///Se copia el contenido del archivo recibido en un archivo 
 			struct sockaddr_in dest_addrUDP;
@@ -162,7 +162,7 @@ int main( int argc, char *argv[] ) {
 				exit( 1 );
 			}
 			dest_addrUDP.sin_family = AF_INET;
-			dest_addrUDP.sin_port = htons(puerto);
+			dest_addrUDP.sin_port = htons(puerto_udp);
 			dest_addrUDP.sin_addr = *( (struct in_addr *)server->h_addr );
 			memset( &(dest_addrUDP.sin_zero), '\0', 8 );
 			int tam_dir = sizeof(dest_addrUDP);
