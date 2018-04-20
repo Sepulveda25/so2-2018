@@ -36,15 +36,15 @@ int main( int argc, char *argv[] ) {
 	printf( "\nPara establecer conexion con el servidor debe ingresar: connect usuario@numero_ip:port\n" );
 	memset( entrada, '\0', TAM );// se coloca un \0 en entrada en la pocision al final de entrada
 	///\par Se le pide al usuario que ingrese connect seguido por usuario@numero_ip:puerto 
-	// fgets( entrada, TAM-1, stdin );//se lee el archivo stdin (lee lo que se ingreso) y se copia en entrada DESCOMENTAR
+	fgets( entrada, TAM-1, stdin );//se lee el archivo stdin (lee lo que se ingreso) y se copia en entrada DESCOMENTAR
 
-	strcpy(entrada,"connect sepulveda@192.168.0.6:6020");//SOLO PARA PRUEBA DESCOMENTAR ARRIBA Y ABAJO
-	// entrada[strlen(entrada)-1] = '\0';// se elimina el \n que es introducido por el usuario cuando preciona "enter" DESCOMENTAR
+	// strcpy(entrada,"connect sepulveda@192.168.0.6:6020");//SOLO PARA PRUEBA DESCOMENTAR ARRIBA Y ABAJO
+	entrada[strlen(entrada)-1] = '\0';// se elimina el \n que es introducido por el usuario cuando preciona "enter" DESCOMENTAR
 	longitud=parsear_entrada(entrada,entrada_parseada," @:");
 
 	while( strcmp( "connect", entrada_parseada[0]) ){
 			printf( "\nComando desconocido debe ingresar connect seguido usuario@numero_ip:puerto del AWS" );
-			printf( "\nCOP: " );
+			printf( "\nCliente: " );
 			memset( entrada, '\0', TAM );// se coloca un \0 en entrada en la pocision al final de entrada
 			fgets( entrada, TAM-1, stdin );//se lee el archivo stdin (lee lo que se ingreso) y se copia en entrada 
 			entrada[strlen(entrada)-1] = '\0';// se elimina el \n que es introducido por el usuario cuando preciona "enter"
@@ -56,17 +56,7 @@ int main( int argc, char *argv[] ) {
 		fprintf( stderr, "Direccion IPv4 inválida.\n");
 		exit( 0 );
 	}
-	// if ( argc < 3 ) {
-	// 	fprintf( stderr, "Uso %s host puerto\n", argv[0]);
-	// 	exit( 0 );
-	// }
 
-	// puerto = atoi( argv[2] );
-	// sockfd = socket( AF_INET, SOCK_STREAM, 0 );
-	// if ( sockfd < 0 ) {
-	// 	perror( "ERROR apertura de socket" );
-	// 	exit( 1 );
-	// }
 	puerto = atoi(entrada_parseada[3]); //numero de puerto
 	sockfd = socket( AF_INET, SOCK_STREAM, 0 );
 	if ( sockfd < 0 ) {
@@ -79,11 +69,7 @@ int main( int argc, char *argv[] ) {
 		fprintf( stderr,"Error, no existe el host\n" );
 		exit( 0 );
 	}
-	// server = gethostbyname( argv[1] );
-	// if (server == NULL) {
-	// 	fprintf( stderr,"Error, no existe el host\n" );
-	// 	exit( 0 );
-	// }
+	
 	memset( (char *) &serv_addr, '0', sizeof(serv_addr) );
 	serv_addr.sin_family = AF_INET;
 	bcopy( (char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length );
@@ -95,7 +81,6 @@ int main( int argc, char *argv[] ) {
 	///\par Se le indica al usuario cliente que la conexión esta establecida
 	printf( "USUARIO %s. Conectado a server de direccion: %s  en puerto: 6020.\n",entrada_parseada[1], entrada_parseada[2]); 
 	while(1) {
-		// printf( "Ingrese el mensaje a transmitir: " );
 
 		///\par Se llama a la funcion autenticacion.
 		while(autenticacion==0){
@@ -156,7 +141,7 @@ int main( int argc, char *argv[] ) {
 			memset( buffer_archivo, '\0', TAM+1 );
 			fin=0;
 			puerto_udp=6020;
-			//*******************************************************************************************************
+			//*********************************************Recepcion UDP**********************************************************
 			///Se copia el contenido del archivo recibido en un archivo 
 			struct sockaddr_in dest_addrUDP;
 			sockfdUDP = socket( AF_INET, SOCK_DGRAM, 0 );
@@ -199,13 +184,6 @@ int main( int argc, char *argv[] ) {
 			fclose(datos);
 
 		}
-		// // Verificando si se escribió: fin
-		// buffer[strlen(buffer)-1] = '\0';
-		// if( !strcmp( "fin", buffer ) ) {
-		// 	terminar = 1;
-		// }
-
-		
 		
 	}
 	return 0;

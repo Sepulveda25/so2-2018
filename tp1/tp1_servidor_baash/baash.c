@@ -125,16 +125,18 @@ int baash(int newsockfd,int clilen) {
 				}else{
 					n = write( newsockfd, " \n", BUFFSIZE ); 
 				}
-			}else if(strcmp(argumentos[0],"descarga")==0){
-				// printf("se va a hacer una descarga\n");
-				// i=0;
-				
+			}
+			///\par Comando "descargar".
+			/// Esta parte lee el archivo que se solicito.
+			///Se recorre por lineas y se comienza enviar los datos al 
+			///cliente utilizando el socket UDP. Cuando se llega al final del archivo se envia la 
+			///cadena "finDeLectura" al cliente, que este interpreta que no hay mas datos para recibir.
+			///Una vez finalizado el envio el achivo se cierra.
+			else if(strcmp(argumentos[0],"descarga")==0){
 
 				printf("Preparando archivo %s....\n",argumentos[1]); // respueta OBLIGATORIA
 				para_enviar = fopen(argumentos[1],"r"); 
-				// tamano_direccion = sizeof( struct sockaddr );
 				
-		
 				//******************** envio UDP********************************
 				
 				/// Se realiza la configuracion para envio por protocolo UDP

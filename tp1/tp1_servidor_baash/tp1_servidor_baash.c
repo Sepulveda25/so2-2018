@@ -54,8 +54,7 @@ int main( int argc, char *argv[] ) {
 			perror( "accept" );
 			exit( 1 );
 		}
-		// dup2(newsockfd, 1);// se desvia el STDOUT
-		// dup2(newsockfd, 0);// se desvia el STDIN
+
 		pid = fork(); 
 		if ( pid < 0 ) {
 			perror( "fork" );
@@ -64,7 +63,7 @@ int main( int argc, char *argv[] ) {
 
 		if ( pid == 0 ) {  // Proceso hijo
 			close( sockfd );
-			// ///\par Se realiza la autenticacion. Espera la contraseña por parte del usuario. Solo tiene cuatro intentos.
+			///\par Se realiza la autenticacion. Espera la contraseña por parte del usuario. Solo tiene cuatro intentos.
 			autenticacion=autenticar(newsockfd);
 
 			while ( 1 ) {
@@ -74,29 +73,9 @@ int main( int argc, char *argv[] ) {
 					close( sockfd );close( newsockfd );
 					exit(0);
 				}
-				// memset( buffer, '\0', TAM );
-				// n = read( newsockfd, buffer, TAM-1 );
-				// if ( n < 0 ) {
-				// 	perror( "lectura de socket" );
-				// 	exit(1);
-				// }
-
-				//printf( "Server->PROCESO %d. ", getpid() );
-				//printf( "Recibí: %s", buffer );
-				
-				// n = write( newsockfd, "Obtuve su mensaje", 18 );
-				// if ( n < 0 ) {
-				// 	perror( "escritura en socket" );
-				// 	exit( 1 );
-				// }
-				// Verificación de si hay que terminar
-				baash(newsockfd,clilen);
-				printf("sali\n");
-				buffer[strlen(buffer)-1] = '\0';
-				if( !strcmp( "fin", buffer ) ) {
-					printf( "PROCESO %d. Como recibí 'fin', termino la ejecución.\n\n", getpid() );
-					exit(0);
-				}
+			
+				/// Se llama a las funcion baash pasandole como parametros el newsockfd y clilen para que pueda usar los socket TPC y UDP respectivamente 
+				baash(newsockfd,clilen); 
 				
 			}
 		}
@@ -131,7 +110,6 @@ int autenticar(int newsockfd){
 	char* buffer_parseado[TAM];
 
 	FILE *usuarios;
-	// usuarios = fopen("usuarios.csv","r");
 	
 	while(intentos>0){
 		/// Se lee el archivo usuarios.csv el cual es una tabla usuario/clave
@@ -149,7 +127,6 @@ int autenticar(int newsockfd){
 		while (!feof (usuarios)){
 			
 			buffer_archivo[strlen(buffer_archivo)-1] = '\0';
-			// buffer[strlen(buffer)-1] = '\0';
 			/// Si los datos coinciden se avisa a destino que la secion pudo iniciar con exito y se retorna 1.
 			if( !strcmp( buffer_archivo,buffer) ){
 				//se encotro el usuario con la clave
