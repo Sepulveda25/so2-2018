@@ -123,7 +123,7 @@ int baash(int newsockfd,int clilen) {
 				if(chdir(argumentos[1])==-1){
 					printf("No existe el fichero ó directorio \n");
 				}else{
-					n = write( newsockfd, " \n", BUFFSIZE ); 
+					printf(" \n"); 
 				}
 			}
 			///\par Comando "descargar".

@@ -130,8 +130,10 @@ int main( int argc, char *argv[] ) {
 		}
 		buffer[strlen(buffer)] = '\n';
 		printf( "%s", buffer ); // Recibo ejecucion de comando
-
-		if((strcmp( "descarga", buffer_parseado[0]))==0){
+		///\par Comando "descargar".
+		/// Se abre un archivo con el nombre del archivo que se solicito descargar del servidor 
+		///donde se iran almacenando los dato recibidos.
+		if((strcmp( "descarga", buffer_parseado[0]))==0){ //Se
 			FILE *datos;
 			memset( nombre_archivo, '\0', TAM );
 			strcpy(nombre_archivo,buffer_parseado[1]);
