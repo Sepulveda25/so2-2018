@@ -1,0 +1,38 @@
+\hypertarget{armar__path__home_8c}{}\section{tp1\+\_\+servidor\+\_\+baash/armar\+\_\+path\+\_\+home.c File Reference}
+\label{armar__path__home_8c}\index{tp1\+\_\+servidor\+\_\+baash/armar\+\_\+path\+\_\+home.\+c@{tp1\+\_\+servidor\+\_\+baash/armar\+\_\+path\+\_\+home.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}parsear\+\_\+entrada.\+h\char`\"{}}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{armar__path__home_8c_a39912bfe2a55f30e269196f9141d845d}{B\+U\+F\+F\+S\+I\+ZE}}~256
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{armar__path__home_8c_a006ca0118a789119bbe1f23607fa172c}{armar\+\_\+path\+\_\+home}} (char $\ast$camino, char $\ast$prefix)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{armar__path__home_8c_a39912bfe2a55f30e269196f9141d845d}\label{armar__path__home_8c_a39912bfe2a55f30e269196f9141d845d}} 
+\index{armar\+\_\+path\+\_\+home.\+c@{armar\+\_\+path\+\_\+home.\+c}!B\+U\+F\+F\+S\+I\+ZE@{B\+U\+F\+F\+S\+I\+ZE}}
+\index{B\+U\+F\+F\+S\+I\+ZE@{B\+U\+F\+F\+S\+I\+ZE}!armar\+\_\+path\+\_\+home.\+c@{armar\+\_\+path\+\_\+home.\+c}}
+\subsubsection{\texorpdfstring{B\+U\+F\+F\+S\+I\+ZE}{BUFFSIZE}}
+{\footnotesize\ttfamily \#define B\+U\+F\+F\+S\+I\+ZE~256}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{armar__path__home_8c_a006ca0118a789119bbe1f23607fa172c}\label{armar__path__home_8c_a006ca0118a789119bbe1f23607fa172c}} 
+\index{armar\+\_\+path\+\_\+home.\+c@{armar\+\_\+path\+\_\+home.\+c}!armar\+\_\+path\+\_\+home@{armar\+\_\+path\+\_\+home}}
+\index{armar\+\_\+path\+\_\+home@{armar\+\_\+path\+\_\+home}!armar\+\_\+path\+\_\+home.\+c@{armar\+\_\+path\+\_\+home.\+c}}
+\subsubsection{\texorpdfstring{armar\+\_\+path\+\_\+home()}{armar\_path\_home()}}
+{\footnotesize\ttfamily void armar\+\_\+path\+\_\+home (\begin{DoxyParamCaption}\item[{char $\ast$}]{camino,  }\item[{char $\ast$}]{prefix }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Función armar\+\_\+path\+\_\+home.}
+Si el path empieza con \char`\"{}$\sim$/\char`\"{} esta funcion se encarga de pasarlo a un P\+A\+TH absoluto 
+\end{DoxyParagraph}

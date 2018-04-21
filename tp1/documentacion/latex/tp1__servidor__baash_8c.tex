@@ -1,0 +1,86 @@
+\hypertarget{tp1__servidor__baash_8c}{}\section{tp1\+\_\+servidor\+\_\+baash/tp1\+\_\+servidor\+\_\+baash.c File Reference}
+\label{tp1__servidor__baash_8c}\index{tp1\+\_\+servidor\+\_\+baash/tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash/tp1\+\_\+servidor\+\_\+baash.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}baash.\+h\char`\"{}}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{tp1__servidor__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}{T\+AM}}~256
+\item 
+\#define \mbox{\hyperlink{tp1__servidor__baash_8c_ab1ae7d4138be559015777248177317ff}{cantida\+\_\+intentos}}~4
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{tp1__servidor__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\item 
+int \mbox{\hyperlink{tp1__servidor__baash_8c_aa327086979e002387089201750a5b84f}{autenticar}} (int newsockfd)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{tp1__servidor__baash_8c_ab1ae7d4138be559015777248177317ff}\label{tp1__servidor__baash_8c_ab1ae7d4138be559015777248177317ff}} 
+\index{tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}!cantida\+\_\+intentos@{cantida\+\_\+intentos}}
+\index{cantida\+\_\+intentos@{cantida\+\_\+intentos}!tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}}
+\subsubsection{\texorpdfstring{cantida\+\_\+intentos}{cantida\_intentos}}
+{\footnotesize\ttfamily \#define cantida\+\_\+intentos~4}
+
+\mbox{\Hypertarget{tp1__servidor__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}\label{tp1__servidor__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}} 
+\index{tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}!T\+AM@{T\+AM}}
+\index{T\+AM@{T\+AM}!tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}}
+\subsubsection{\texorpdfstring{T\+AM}{TAM}}
+{\footnotesize\ttfamily \#define T\+AM~256}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{tp1__servidor__baash_8c_aa327086979e002387089201750a5b84f}\label{tp1__servidor__baash_8c_aa327086979e002387089201750a5b84f}} 
+\index{tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}!autenticar@{autenticar}}
+\index{autenticar@{autenticar}!tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}}
+\subsubsection{\texorpdfstring{autenticar()}{autenticar()}}
+{\footnotesize\ttfamily int autenticar (\begin{DoxyParamCaption}\item[{int}]{newsockfd }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em newsockfd} & es el file descriptor utilizado para realizar la comunicaciones T\+CP. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Devuelve 1 si la clave fue correcta 0 si no lo fue.
+\end{DoxyReturn}
+\begin{DoxyParagraph}{Función autenticacion.}
+Se utiliza un archivo usuarios.\+csv inicialmente pre cargado (si no la aplicacion no va a poder funcionar) con nomebres de usuarios y las correspondientes claves. Se espera en mensaje por parte del cliente para realizar las comparaciones con los datos del archivo. En total el cliente tiene 4 intentos de ingresar la clave de forma incorrecta en caso que no lo logre en niguno de esos intentos se avisa al cliente y se retorna 0. En caso de una conicidencia exitosa se le avisa al usuario y retorna 1. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Variable intentos\+:}
+Numero de oportunidades que tiene el usuario para intentar ingresar mal la clave.
+\end{DoxyParagraph}
+Se lee el archivo usuarios.\+csv el cual es una tabla usuario/clave
+
+Espera usuario/clave por parte del cliente ~\newline
+~\newline
+~\newline
+~\newline
+~\newline
+ Comienza a comparar el dato recibido con todos los datos en la tabla usuarios.\+csv
+
+Si los datos coinciden se avisa a destino que la secion pudo iniciar con exito y se retorna 1.
+
+En caso de que no coincidan se avisa a destino que la clave o usuario no son correctos
+
+Se resta 1 a intentos y vuelve a empezar
+
+Si intentos llego a 0 quiere decir que se supero la cantidad de intentos, por lo tanto se le avisa al cliente \mbox{\Hypertarget{tp1__servidor__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}\label{tp1__servidor__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}!main@{main}}
+\index{main@{main}!tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Se realiza la autenticacion. Espera la contraseña por parte del usuario. Solo tiene cuatro intentos. }
+
+\end{DoxyParagraph}
+Se llama a las funcion baash pasandole como parametros el newsockfd y clilen para que pueda usar los socket T\+PC y U\+DP respectivamente 

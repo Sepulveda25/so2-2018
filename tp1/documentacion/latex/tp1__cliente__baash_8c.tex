@@ -1,0 +1,126 @@
+\hypertarget{tp1__cliente__baash_8c}{}\section{tp1\+\_\+cliente\+\_\+baash/tp1\+\_\+cliente\+\_\+baash.c File Reference}
+\label{tp1__cliente__baash_8c}\index{tp1\+\_\+cliente\+\_\+baash/tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash/tp1\+\_\+cliente\+\_\+baash.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
+{\ttfamily \#include $<$netdb.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{tp1__cliente__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}{T\+AM}}~2048
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{tp1__cliente__baash_8c_ae2ad7b136fbd78e69c1b59fe07ecd34e}{parsear\+\_\+entrada}} (char $\ast$entrada, char $\ast$entrada\+\_\+parseada\mbox{[}$\,$\mbox{]}, char $\ast$caracteres)
+\item 
+int \mbox{\hyperlink{tp1__cliente__baash_8c_a4c20d648c5eb018a786c3c44b96eb27e}{autenticar}} (int sockfd, char $\ast$usuario)
+\item 
+int \mbox{\hyperlink{tp1__cliente__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{tp1__cliente__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}\label{tp1__cliente__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}} 
+\index{tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash.\+c}!T\+AM@{T\+AM}}
+\index{T\+AM@{T\+AM}!tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash.\+c}}
+\subsubsection{\texorpdfstring{T\+AM}{TAM}}
+{\footnotesize\ttfamily \#define T\+AM~2048}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{tp1__cliente__baash_8c_a4c20d648c5eb018a786c3c44b96eb27e}\label{tp1__cliente__baash_8c_a4c20d648c5eb018a786c3c44b96eb27e}} 
+\index{tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash.\+c}!autenticar@{autenticar}}
+\index{autenticar@{autenticar}!tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash.\+c}}
+\subsubsection{\texorpdfstring{autenticar()}{autenticar()}}
+{\footnotesize\ttfamily int autenticar (\begin{DoxyParamCaption}\item[{int}]{sockfd,  }\item[{char $\ast$}]{usuario }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em sockfd} & es el file descriptor utilizado para realizar la comunicaciones T\+CP. \\
+\hline
+{\em usuario} & es el nombre de usuario. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Devuelve 1 si la autenticacion fue exitosa, -\/1 si se supero en numero de intentos por parte del servidor y 0 si la clave o usuario son incorrectos.
+\end{DoxyReturn}
+\begin{DoxyParagraph}{Función autenticar.}
+Esta funcion se encarga de la autencicacion con el servidor. Se le envia a destino el usuario con la clave ingresada con formato \char`\"{}usuario,clave\char`\"{}, esta cadena se compara con los datos almacenados en la tabla. 
+\end{DoxyParagraph}
+Se le pide al usuario que ingrese la clave correspondiete
+
+Se concatena la el nombre de usuario con la clave y se le da el formato para ser leido por el destino.
+
+Se envia la cadena
+
+Se espera respuesta por parte del servidor
+
+
+\begin{DoxyItemize}
+\item Si es \char`\"{}ok\char`\"{} significa que la clave ingresada fue correcta.
+\item Si es \char`\"{}supero\+Intentos\char`\"{} significa que finalizo la autenticacion por superar la cantidad de intentos
+\item Si es \char`\"{}no\char`\"{} es porque la clave o usuarios no son correctos 
+\end{DoxyItemize}\mbox{\Hypertarget{tp1__cliente__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}\label{tp1__cliente__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash.\+c}!main@{main}}
+\index{main@{main}!tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash.\+c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Se le pide al usuario que ingrese connect seguido por usuario\+:puerto }
+~\newline
+~\newline
+~\newline
+~\newline
+~\newline
+~\newline
+~\newline
+~\newline
+ 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Se le indica al usuario cliente que la conexión esta establecida }
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Se llama a la funcion autenticacion. }
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Si fallo la acutenticion se cierra la aplicacion cliente }
+
+\end{DoxyParagraph}
+se imprime promt()
+
+\begin{DoxyParagraph}{Comando \char`\"{}descargar\char`\"{}.}
+Se abre un archivo con el nombre del archivo que se solicito descargar del servidor donde se iran almacenando los dato recibidos. ~\newline
+~\newline
+~\newline
+ Se copia el contenido del archivo recibido en un archivo ~\newline
+~\newline
+
+\end{DoxyParagraph}
+Recibe respuesta del Server de que el archivo se transfirió correctamente \mbox{\Hypertarget{tp1__cliente__baash_8c_ae2ad7b136fbd78e69c1b59fe07ecd34e}\label{tp1__cliente__baash_8c_ae2ad7b136fbd78e69c1b59fe07ecd34e}} 
+\index{tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash.\+c}!parsear\+\_\+entrada@{parsear\+\_\+entrada}}
+\index{parsear\+\_\+entrada@{parsear\+\_\+entrada}!tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash.\+c}}
+\subsubsection{\texorpdfstring{parsear\+\_\+entrada()}{parsear\_entrada()}}
+{\footnotesize\ttfamily int parsear\+\_\+entrada (\begin{DoxyParamCaption}\item[{char $\ast$}]{entrada,  }\item[{char $\ast$}]{entrada\+\_\+parseada\mbox{[}$\,$\mbox{]},  }\item[{char $\ast$}]{caracteres }\end{DoxyParamCaption})}
+
+Función principal del cliente.
+
+
+\begin{DoxyParams}{Parameters}
+{\em entrada} & es la cadena que se quiere parsear. \\
+\hline
+{\em entrada\+\_\+parseada\mbox{[}$\,$\mbox{]}} & es donde se va almacenando la cadena ya parseada. \\
+\hline
+{\em caracteres} & son los caracteres que se quieren quitar de la cadena \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Devuelve la longitud de entrada\+\_\+parseada.
+\end{DoxyReturn}
+\begin{DoxyParagraph}{Función parsear\+\_\+entrada.}
+Esta funcion quita la los simbolos (que se le pasan caracteres). Es util para transformar una cadena en una lista de cadenas 
+\end{DoxyParagraph}

@@ -1,0 +1,25 @@
+\hypertarget{baash_8h}{}\section{tp1\+\_\+servidor\+\_\+baash/baash.h File Reference}
+\label{baash_8h}\index{tp1\+\_\+servidor\+\_\+baash/baash.\+h@{tp1\+\_\+servidor\+\_\+baash/baash.\+h}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{baash_8h_a1d37f747d655b41950106708f666939f}{baash}} (int newsockfd, int clilen)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{baash_8h_a1d37f747d655b41950106708f666939f}\label{baash_8h_a1d37f747d655b41950106708f666939f}} 
+\index{baash.\+h@{baash.\+h}!baash@{baash}}
+\index{baash@{baash}!baash.\+h@{baash.\+h}}
+\subsubsection{\texorpdfstring{baash()}{baash()}}
+{\footnotesize\ttfamily int baash (\begin{DoxyParamCaption}\item[{int}]{newsockfd,  }\item[{int}]{clilen }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Comando \char`\"{}descargar\char`\"{}.}
+Esta parte lee el archivo que se solicito. Se recorre por lineas y se comienza enviar los datos al cliente utilizando el socket U\+DP. Cuando se llega al final del archivo se envia la cadena \char`\"{}fin\+De\+Lectura\char`\"{} al cliente, que este interpreta que no hay mas datos para recibir. Una vez finalizado el envio el achivo se cierra. ~\newline
+~\newline
+~\newline
+ Se realiza la configuracion para envio por protocolo U\+DP
+\end{DoxyParagraph}
+Se comienza a leer el archivo y enviar los datos leidos
+
+Se avisa al destino que no hay mas datos por enviar 

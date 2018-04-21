@@ -11,15 +11,15 @@
 #include <netinet/in.h>
 #include "baash.h"
 #define TAM 256
-#define cantida_intentos 4
+/// cantidad de intentos para fallar el logueo
+#define cantida_intentos 4 
 
 int main( int argc, char *argv[] ) {
 	
 	//Variables de configuracion de socket
-	int sockfd, newsockfd, puerto, clilen, pid;
+	int sockfd, puerto, clilen;
 	struct sockaddr_in serv_addr, cli_addr;
-	int n,autenticacion=0;
-	char buffer[TAM];
+	int autenticacion=0;
 	if ( argc < 2 ) {
         	fprintf( stderr, "Uso: %s <puerto>\n", argv[0] );
 		exit( 1 );
@@ -49,13 +49,13 @@ int main( int argc, char *argv[] ) {
 
 	
 	while( 1 ) {
-		newsockfd = accept( sockfd, (struct sockaddr *) &cli_addr, &clilen );
+		int newsockfd = accept( sockfd, (struct sockaddr *) &cli_addr, &clilen );
 		if ( newsockfd < 0 ) {
 			perror( "accept" );
 			exit( 1 );
 		}
 
-		pid = fork(); 
+		int pid = fork(); 
 		if ( pid < 0 ) {
 			perror( "fork" );
 			exit( 1 );
@@ -100,20 +100,18 @@ int main( int argc, char *argv[] ) {
 ///avisa al cliente y se retorna 0. En caso de una conicidencia exitosa se le avisa al usuario y retorna 1.
 
 int autenticar(int newsockfd){
-	int n, logitud;
+	int n;
 	/**
 	* \par Variable intentos:
 	* Numero de oportunidades que tiene el usuario para intentar ingresar mal la clave.
 	*/
 	int intentos=cantida_intentos;
-	char buffer[TAM], usuario[TAM],buffer_archivo[TAM];
+	char buffer[TAM],buffer_archivo[TAM];
 	char* buffer_parseado[TAM];
-
-	FILE *usuarios;
 	
 	while(intentos>0){
 		/// Se lee el archivo usuarios.csv el cual es una tabla usuario/clave
-		usuarios = fopen("usuarios.csv","r");
+		FILE *usuarios = fopen("usuarios.csv","r");
 		memset( buffer_archivo, '\0', TAM );
 		memset( buffer, '\0', TAM );
 		/// Espera usuario/clave por parte del cliente		

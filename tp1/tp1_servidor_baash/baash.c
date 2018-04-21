@@ -39,7 +39,6 @@ int baash(int newsockfd,int clilen) {
 	int fd;
 	int pipe_fds[2];
 	int n=0;
-	int espacio;
 	//Variable para socket UDP
 	int sockfdUDP;
 	int puerto_udp = 6020;
@@ -72,7 +71,6 @@ int baash(int newsockfd,int clilen) {
 		int operacion=0;
 		int comando;
 		int i=0;
-		espacio=0;
 		// memset(entrada, '\0', BUFFSIZE );
 		// printf("strlen(entrada)=%d\n", strlen(entrada));
 		memset(entrada, '\0', BUFFSIZE );

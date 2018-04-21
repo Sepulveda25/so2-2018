@@ -133,7 +133,7 @@ int main( int argc, char *argv[] ) {
 		///\par Comando "descargar".
 		/// Se abre un archivo con el nombre del archivo que se solicito descargar del servidor 
 		///donde se iran almacenando los dato recibidos.
-		if((strcmp( "descarga", buffer_parseado[0]))==0){ //Se
+		if((strcmp( "descarga", buffer_parseado[0]))==0){ 
 			FILE *datos;
 			memset( nombre_archivo, '\0', TAM );
 			strcpy(nombre_archivo,buffer_parseado[1]);
