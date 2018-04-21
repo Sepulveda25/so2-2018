@@ -3,6 +3,7 @@
 * \brief Aplicación de Server baash. 
 * \author Sepulveda Federico
 * */
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,14 +11,17 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include "baash.h"
+/// Tamaño de los buffer para sockets 
 #define TAM 256
-/// cantidad de intentos para fallar el logueo
+/// Cantidad de intentos para fallar el logueo
 #define cantida_intentos 4 
+int autenticar(int newsockfd);
 
 int main( int argc, char *argv[] ) {
 	
 	//Variables de configuracion de socket
-	int sockfd, puerto, clilen;
+	int sockfd, puerto;
+	socklen_t clilen;
 	struct sockaddr_in serv_addr, cli_addr;
 	int autenticacion=0;
 	if ( argc < 2 ) {
@@ -107,7 +111,6 @@ int autenticar(int newsockfd){
 	*/
 	int intentos=cantida_intentos;
 	char buffer[TAM],buffer_archivo[TAM];
-	char* buffer_parseado[TAM];
 	
 	while(intentos>0){
 		/// Se lee el archivo usuarios.csv el cual es una tabla usuario/clave

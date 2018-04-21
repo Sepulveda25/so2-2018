@@ -1,50 +1,56 @@
-\hypertarget{tp1__servidor__baash_8c}{}\section{tp1\+\_\+servidor\+\_\+baash/tp1\+\_\+servidor\+\_\+baash.c File Reference}
-\label{tp1__servidor__baash_8c}\index{tp1\+\_\+servidor\+\_\+baash/tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash/tp1\+\_\+servidor\+\_\+baash.\+c}}
-{\ttfamily \#include $<$stdio.\+h$>$}\newline
-{\ttfamily \#include $<$stdlib.\+h$>$}\newline
-{\ttfamily \#include $<$string.\+h$>$}\newline
-{\ttfamily \#include $<$sys/types.\+h$>$}\newline
-{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
-{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
-{\ttfamily \#include \char`\"{}baash.\+h\char`\"{}}\newline
+\hypertarget{tp1__servidor__baash_8c}{}\section{tp1/tp1\+\_\+servidor\+\_\+baash/tp1\+\_\+servidor\+\_\+baash.c File Reference}
+\label{tp1__servidor__baash_8c}\index{tp1/tp1\+\_\+servidor\+\_\+baash/tp1\+\_\+servidor\+\_\+baash.\+c@{tp1/tp1\+\_\+servidor\+\_\+baash/tp1\+\_\+servidor\+\_\+baash.\+c}}
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$sys/socket.\+h$>$}\\*
+{\ttfamily \#include $<$netinet/in.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}baash.\+h\char`\"{}}\\*
+Include dependency graph for tp1\+\_\+servidor\+\_\+baash.\+c\+:
+% FIG 0
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
-\#define \mbox{\hyperlink{tp1__servidor__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}{T\+AM}}~256
-\item 
-\#define \mbox{\hyperlink{tp1__servidor__baash_8c_ab1ae7d4138be559015777248177317ff}{cantida\+\_\+intentos}}~4
-\end{DoxyCompactItemize}
+\#define \hyperlink{tp1__servidor__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}{T\+AM}~256
+\begin{DoxyCompactList}\small\item\em Tamaño de los buffer para sockets. \end{DoxyCompactList}\item 
+\#define \hyperlink{tp1__servidor__baash_8c_ab1ae7d4138be559015777248177317ff}{cantida\+\_\+intentos}~4
+\begin{DoxyCompactList}\small\item\em Cantidad de intentos para fallar el logueo. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-int \mbox{\hyperlink{tp1__servidor__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+int \hyperlink{tp1__servidor__baash_8c_aa327086979e002387089201750a5b84f}{autenticar} (int newsockfd)
 \item 
-int \mbox{\hyperlink{tp1__servidor__baash_8c_aa327086979e002387089201750a5b84f}{autenticar}} (int newsockfd)
+int \hyperlink{tp1__servidor__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
 \end{DoxyCompactItemize}
 
 
 \subsection{Macro Definition Documentation}
-\mbox{\Hypertarget{tp1__servidor__baash_8c_ab1ae7d4138be559015777248177317ff}\label{tp1__servidor__baash_8c_ab1ae7d4138be559015777248177317ff}} 
 \index{tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}!cantida\+\_\+intentos@{cantida\+\_\+intentos}}
 \index{cantida\+\_\+intentos@{cantida\+\_\+intentos}!tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}}
-\subsubsection{\texorpdfstring{cantida\+\_\+intentos}{cantida\_intentos}}
-{\footnotesize\ttfamily \#define cantida\+\_\+intentos~4}
+\subsubsection[{\texorpdfstring{cantida\+\_\+intentos}{cantida_intentos}}]{\setlength{\rightskip}{0pt plus 5cm}\#define cantida\+\_\+intentos~4}\hypertarget{tp1__servidor__baash_8c_ab1ae7d4138be559015777248177317ff}{}\label{tp1__servidor__baash_8c_ab1ae7d4138be559015777248177317ff}
 
-\mbox{\Hypertarget{tp1__servidor__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}\label{tp1__servidor__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}} 
+
+Cantidad de intentos para fallar el logueo. 
+
 \index{tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}!T\+AM@{T\+AM}}
 \index{T\+AM@{T\+AM}!tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}}
-\subsubsection{\texorpdfstring{T\+AM}{TAM}}
-{\footnotesize\ttfamily \#define T\+AM~256}
+\subsubsection[{\texorpdfstring{T\+AM}{TAM}}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\+AM~256}\hypertarget{tp1__servidor__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}{}\label{tp1__servidor__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}
+
+
+Tamaño de los buffer para sockets. 
 
 
 
 \subsection{Function Documentation}
-\mbox{\Hypertarget{tp1__servidor__baash_8c_aa327086979e002387089201750a5b84f}\label{tp1__servidor__baash_8c_aa327086979e002387089201750a5b84f}} 
 \index{tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}!autenticar@{autenticar}}
 \index{autenticar@{autenticar}!tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}}
-\subsubsection{\texorpdfstring{autenticar()}{autenticar()}}
-{\footnotesize\ttfamily int autenticar (\begin{DoxyParamCaption}\item[{int}]{newsockfd }\end{DoxyParamCaption})}
-
+\subsubsection[{\texorpdfstring{autenticar(int newsockfd)}{autenticar(int newsockfd)}}]{\setlength{\rightskip}{0pt plus 5cm}int autenticar (
+\begin{DoxyParamCaption}
+\item[{int}]{newsockfd}
+\end{DoxyParamCaption}
+)}\hypertarget{tp1__servidor__baash_8c_aa327086979e002387089201750a5b84f}{}\label{tp1__servidor__baash_8c_aa327086979e002387089201750a5b84f}
 
 \begin{DoxyParams}{Parameters}
 {\em newsockfd} & es el file descriptor utilizado para realizar la comunicaciones T\+CP. \\
@@ -61,12 +67,9 @@ Numero de oportunidades que tiene el usuario para intentar ingresar mal la clave
 \end{DoxyParagraph}
 Se lee el archivo usuarios.\+csv el cual es una tabla usuario/clave
 
-Espera usuario/clave por parte del cliente ~\newline
-~\newline
-~\newline
-~\newline
-~\newline
- Comienza a comparar el dato recibido con todos los datos en la tabla usuarios.\+csv
+Espera usuario/clave por parte del cliente
+
+Comienza a comparar el dato recibido con todos los datos en la tabla usuarios.\+csv
 
 Si los datos coinciden se avisa a destino que la secion pudo iniciar con exito y se retorna 1.
 
@@ -74,12 +77,14 @@ En caso de que no coincidan se avisa a destino que la clave o usuario no son cor
 
 Se resta 1 a intentos y vuelve a empezar
 
-Si intentos llego a 0 quiere decir que se supero la cantidad de intentos, por lo tanto se le avisa al cliente \mbox{\Hypertarget{tp1__servidor__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}\label{tp1__servidor__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}} 
-\index{tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}!main@{main}}
+Si intentos llego a 0 quiere decir que se supero la cantidad de intentos, por lo tanto se le avisa al cliente \index{tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}!main@{main}}
 \index{main@{main}!tp1\+\_\+servidor\+\_\+baash.\+c@{tp1\+\_\+servidor\+\_\+baash.\+c}}
-\subsubsection{\texorpdfstring{main()}{main()}}
-{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
-
+\subsubsection[{\texorpdfstring{main(int argc, char $\ast$argv[])}{main(int argc, char *argv[])}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{tp1__servidor__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}{}\label{tp1__servidor__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}
 \begin{DoxyParagraph}{Se realiza la autenticacion. Espera la contraseña por parte del usuario. Solo tiene cuatro intentos. }
 
 \end{DoxyParagraph}

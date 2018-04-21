@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['tp1_5fcliente_5fbaash_2ec',['tp1_cliente_baash.c',['../tp1__cliente__baash_8c.html',1,'']]],
-  ['tp1_5fservidor_5fbaash_2ec',['tp1_servidor_baash.c',['../tp1__servidor__baash_8c.html',1,'']]]
+  ['parsear_5fentrada_2ec',['parsear_entrada.c',['../parsear__entrada_8c.html',1,'']]],
+  ['parsear_5fentrada_2eh',['parsear_entrada.h',['../parsear__entrada_8h.html',1,'']]],
+  ['pipe_5fargumentos_2ec',['pipe_argumentos.c',['../pipe__argumentos_8c.html',1,'']]],
+  ['pipe_5fargumentos_2eh',['pipe_argumentos.h',['../pipe__argumentos_8h.html',1,'']]]
 ];

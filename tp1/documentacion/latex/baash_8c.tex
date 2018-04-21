@@ -1,102 +1,118 @@
-\hypertarget{baash_8c}{}\section{tp1\+\_\+servidor\+\_\+baash/baash.c File Reference}
-\label{baash_8c}\index{tp1\+\_\+servidor\+\_\+baash/baash.\+c@{tp1\+\_\+servidor\+\_\+baash/baash.\+c}}
-{\ttfamily \#include $<$stdio.\+h$>$}\newline
-{\ttfamily \#include \char`\"{}parsear\+\_\+entrada.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}prompt.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}buscar\+\_\+en\+\_\+\+P\+A\+T\+H.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}cantidad\+\_\+de\+\_\+retrocesos.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}armar\+\_\+path\+\_\+relativo.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}armar\+\_\+path\+\_\+home.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}pipe\+\_\+argumentos.\+h\char`\"{}}\newline
-{\ttfamily \#include $<$sys/wait.\+h$>$}\newline
-{\ttfamily \#include $<$unistd.\+h$>$}\newline
-{\ttfamily \#include $<$stdlib.\+h$>$}\newline
-{\ttfamily \#include $<$time.\+h$>$}\newline
-{\ttfamily \#include $<$string.\+h$>$}\newline
-{\ttfamily \#include $<$sys/types.\+h$>$}\newline
-{\ttfamily \#include $<$fcntl.\+h$>$}\newline
-{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
-{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
+\hypertarget{baash_8c}{}\section{tp1/tp1\+\_\+servidor\+\_\+baash/baash.c File Reference}
+\label{baash_8c}\index{tp1/tp1\+\_\+servidor\+\_\+baash/baash.\+c@{tp1/tp1\+\_\+servidor\+\_\+baash/baash.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}parsear\+\_\+entrada.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}buscar\+\_\+en\+\_\+\+P\+A\+T\+H.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}cantidad\+\_\+de\+\_\+retrocesos.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}armar\+\_\+path\+\_\+relativo.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}pipe\+\_\+argumentos.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$sys/wait.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$fcntl.\+h$>$}\\*
+{\ttfamily \#include $<$sys/socket.\+h$>$}\\*
+{\ttfamily \#include $<$netinet/in.\+h$>$}\\*
+Include dependency graph for baash.\+c\+:
+% FIG 0
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
-\#define \mbox{\hyperlink{baash_8c_a39912bfe2a55f30e269196f9141d845d}{B\+U\+F\+F\+S\+I\+ZE}}~1024
+\#define \hyperlink{baash_8c_a39912bfe2a55f30e269196f9141d845d}{B\+U\+F\+F\+S\+I\+ZE}~1024
+\begin{DoxyCompactList}\small\item\em Tamaño de los buffer para sockets. \end{DoxyCompactList}\item 
+\#define \hyperlink{baash_8c_ada74e7db007a68e763f20c17f2985356}{R\+E\+AD}~0
 \item 
-\#define \mbox{\hyperlink{baash_8c_ada74e7db007a68e763f20c17f2985356}{R\+E\+AD}}~0
-\item 
-\#define \mbox{\hyperlink{baash_8c_aa10f470e996d0f51210d24f442d25e1e}{W\+R\+I\+TE}}~1
+\#define \hyperlink{baash_8c_aa10f470e996d0f51210d24f442d25e1e}{W\+R\+I\+TE}~1
 \end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{baash_8c_afa626168c9182e44ca4c847464ec0dab}{obtener\+\_\+entrada}} (char $\ast$entrada, char $\ast$argumentos\mbox{[}$\,$\mbox{]}, char $\ast$fichero)
+void \hyperlink{baash_8c_afa626168c9182e44ca4c847464ec0dab}{obtener\+\_\+entrada} (char $\ast$entrada, char $\ast$argumentos\mbox{[}$\,$\mbox{]}, char $\ast$fichero)
 \item 
-int \mbox{\hyperlink{baash_8c_a9308173e8a8a9cb1cc59151a4456180a}{operadores}} (char $\ast$argumentos\mbox{[}$\,$\mbox{]})
+int \hyperlink{baash_8c_a9308173e8a8a9cb1cc59151a4456180a}{operadores} (char $\ast$argumentos\mbox{[}$\,$\mbox{]})
 \begin{DoxyCompactList}\small\item\em Parsea argumentos de la linea de comandos. y detecta \textquotesingle{}\&\textquotesingle{}, \textquotesingle{}$<$\textquotesingle{}, \textquotesingle{}$>$\textquotesingle{} y \textquotesingle{}$\vert$\textquotesingle{}. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{baash_8c_a338ba26b1e878583d253e45754460fff}{buscar\+\_\+path\+\_\+ejecutar}} (char $\ast$camino, char $\ast$argumentos\mbox{[}$\,$\mbox{]})
+void \hyperlink{baash_8c_a338ba26b1e878583d253e45754460fff}{buscar\+\_\+path\+\_\+ejecutar} (char $\ast$camino, char $\ast$argumentos\mbox{[}$\,$\mbox{]})
 \begin{DoxyCompactList}\small\item\em Se identifica que tipo de path es (absoluto, relativo, etc) \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{baash_8c_a1d37f747d655b41950106708f666939f}{baash}} (int newsockfd, int clilen)
+int \hyperlink{baash_8c_a43f69d6139393059c8d90ad756333424}{baash} (int newsockfd, socklen\+\_\+t clilen)
 \end{DoxyCompactItemize}
 
 
 \subsection{Macro Definition Documentation}
-\mbox{\Hypertarget{baash_8c_a39912bfe2a55f30e269196f9141d845d}\label{baash_8c_a39912bfe2a55f30e269196f9141d845d}} 
 \index{baash.\+c@{baash.\+c}!B\+U\+F\+F\+S\+I\+ZE@{B\+U\+F\+F\+S\+I\+ZE}}
 \index{B\+U\+F\+F\+S\+I\+ZE@{B\+U\+F\+F\+S\+I\+ZE}!baash.\+c@{baash.\+c}}
-\subsubsection{\texorpdfstring{B\+U\+F\+F\+S\+I\+ZE}{BUFFSIZE}}
-{\footnotesize\ttfamily \#define B\+U\+F\+F\+S\+I\+ZE~1024}
+\subsubsection[{\texorpdfstring{B\+U\+F\+F\+S\+I\+ZE}{BUFFSIZE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\+U\+F\+F\+S\+I\+ZE~1024}\hypertarget{baash_8c_a39912bfe2a55f30e269196f9141d845d}{}\label{baash_8c_a39912bfe2a55f30e269196f9141d845d}
 
-\mbox{\Hypertarget{baash_8c_ada74e7db007a68e763f20c17f2985356}\label{baash_8c_ada74e7db007a68e763f20c17f2985356}} 
+
+Tamaño de los buffer para sockets. 
+
 \index{baash.\+c@{baash.\+c}!R\+E\+AD@{R\+E\+AD}}
 \index{R\+E\+AD@{R\+E\+AD}!baash.\+c@{baash.\+c}}
-\subsubsection{\texorpdfstring{R\+E\+AD}{READ}}
-{\footnotesize\ttfamily \#define R\+E\+AD~0}
-
-\mbox{\Hypertarget{baash_8c_aa10f470e996d0f51210d24f442d25e1e}\label{baash_8c_aa10f470e996d0f51210d24f442d25e1e}} 
+\subsubsection[{\texorpdfstring{R\+E\+AD}{READ}}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\+E\+AD~0}\hypertarget{baash_8c_ada74e7db007a68e763f20c17f2985356}{}\label{baash_8c_ada74e7db007a68e763f20c17f2985356}
 \index{baash.\+c@{baash.\+c}!W\+R\+I\+TE@{W\+R\+I\+TE}}
 \index{W\+R\+I\+TE@{W\+R\+I\+TE}!baash.\+c@{baash.\+c}}
-\subsubsection{\texorpdfstring{W\+R\+I\+TE}{WRITE}}
-{\footnotesize\ttfamily \#define W\+R\+I\+TE~1}
-
+\subsubsection[{\texorpdfstring{W\+R\+I\+TE}{WRITE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define W\+R\+I\+TE~1}\hypertarget{baash_8c_aa10f470e996d0f51210d24f442d25e1e}{}\label{baash_8c_aa10f470e996d0f51210d24f442d25e1e}
 
 
 \subsection{Function Documentation}
-\mbox{\Hypertarget{baash_8c_a1d37f747d655b41950106708f666939f}\label{baash_8c_a1d37f747d655b41950106708f666939f}} 
 \index{baash.\+c@{baash.\+c}!baash@{baash}}
 \index{baash@{baash}!baash.\+c@{baash.\+c}}
-\subsubsection{\texorpdfstring{baash()}{baash()}}
-{\footnotesize\ttfamily int baash (\begin{DoxyParamCaption}\item[{int}]{newsockfd,  }\item[{int}]{clilen }\end{DoxyParamCaption})}
+\subsubsection[{\texorpdfstring{baash(int newsockfd, socklen\+\_\+t clilen)}{baash(int newsockfd, socklen_t clilen)}}]{\setlength{\rightskip}{0pt plus 5cm}int baash (
+\begin{DoxyParamCaption}
+\item[{int}]{newsockfd, }
+\item[{socklen\+\_\+t}]{clilen}
+\end{DoxyParamCaption}
+)}\hypertarget{baash_8c_a43f69d6139393059c8d90ad756333424}{}\label{baash_8c_a43f69d6139393059c8d90ad756333424}
+
+\begin{DoxyParams}{Parameters}
+{\em newsockfd} & es el file descriptor del socket T\+CP. \\
+\hline
+{\em clilen} & es tamaño de la estructura del socket\\
+\hline
+\end{DoxyParams}
+\begin{DoxyParagraph}{baash.}
+Esta funcion el el baash desarrollado en sistemas operativos I. Se le hizo una modificacion para poder desviar el S\+T\+D\+IN y el S\+T\+O\+UT por el socket y para poder enviar archivos por el socket U\+DP. 
+\end{DoxyParagraph}
+Se desvia el S\+T\+D\+O\+UT por el puerto T\+CP
+
+Se desvia el S\+T\+D\+IN por el puerto T\+CP
 
 \begin{DoxyParagraph}{Comando \char`\"{}descargar\char`\"{}.}
-Esta parte lee el archivo que se solicito. Se recorre por lineas y se comienza enviar los datos al cliente utilizando el socket U\+DP. Cuando se llega al final del archivo se envia la cadena \char`\"{}fin\+De\+Lectura\char`\"{} al cliente, que este interpreta que no hay mas datos para recibir. Una vez finalizado el envio el achivo se cierra. ~\newline
-~\newline
-~\newline
- Se realiza la configuracion para envio por protocolo U\+DP
+Esta parte lee el archivo que se solicito. Se recorre por lineas y se comienza enviar los datos al cliente utilizando el socket U\+DP. Cuando se llega al final del archivo se envia la cadena \char`\"{}fin\+De\+Lectura\char`\"{} al cliente, que este interpreta que no hay mas datos para recibir. Una vez finalizado el envio el achivo se cierra.
 \end{DoxyParagraph}
+Se realiza la configuracion para envio por protocolo U\+DP
+
 Se comienza a leer el archivo y enviar los datos leidos
 
-Se avisa al destino que no hay mas datos por enviar \mbox{\Hypertarget{baash_8c_a338ba26b1e878583d253e45754460fff}\label{baash_8c_a338ba26b1e878583d253e45754460fff}} 
-\index{baash.\+c@{baash.\+c}!buscar\+\_\+path\+\_\+ejecutar@{buscar\+\_\+path\+\_\+ejecutar}}
+Se avisa al destino que no hay mas datos por enviar \index{baash.\+c@{baash.\+c}!buscar\+\_\+path\+\_\+ejecutar@{buscar\+\_\+path\+\_\+ejecutar}}
 \index{buscar\+\_\+path\+\_\+ejecutar@{buscar\+\_\+path\+\_\+ejecutar}!baash.\+c@{baash.\+c}}
-\subsubsection{\texorpdfstring{buscar\+\_\+path\+\_\+ejecutar()}{buscar\_path\_ejecutar()}}
-{\footnotesize\ttfamily void buscar\+\_\+path\+\_\+ejecutar (\begin{DoxyParamCaption}\item[{char $\ast$}]{camino,  }\item[{char $\ast$}]{argumentos\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
-
+\subsubsection[{\texorpdfstring{buscar\+\_\+path\+\_\+ejecutar(char $\ast$camino, char $\ast$argumentos[])}{buscar_path_ejecutar(char *camino, char *argumentos[])}}]{\setlength{\rightskip}{0pt plus 5cm}void buscar\+\_\+path\+\_\+ejecutar (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{camino, }
+\item[{char $\ast$}]{argumentos\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{baash_8c_a338ba26b1e878583d253e45754460fff}{}\label{baash_8c_a338ba26b1e878583d253e45754460fff}
 
 
 Se identifica que tipo de path es (absoluto, relativo, etc) 
 
-\mbox{\Hypertarget{baash_8c_afa626168c9182e44ca4c847464ec0dab}\label{baash_8c_afa626168c9182e44ca4c847464ec0dab}} 
 \index{baash.\+c@{baash.\+c}!obtener\+\_\+entrada@{obtener\+\_\+entrada}}
 \index{obtener\+\_\+entrada@{obtener\+\_\+entrada}!baash.\+c@{baash.\+c}}
-\subsubsection{\texorpdfstring{obtener\+\_\+entrada()}{obtener\_entrada()}}
-{\footnotesize\ttfamily void obtener\+\_\+entrada (\begin{DoxyParamCaption}\item[{char $\ast$}]{entrada,  }\item[{char $\ast$}]{argumentos\mbox{[}$\,$\mbox{]},  }\item[{char $\ast$}]{fichero }\end{DoxyParamCaption})}
-
-Se parsea la entrada por teclado que contiene el path o directamente el programa a ejecutar en caso de estar en \$\+P\+A\+TH (como date) y los parametros para la ejecucion del mismo. El resultado del parseo se guarda en la variable argumentos. \mbox{\Hypertarget{baash_8c_a9308173e8a8a9cb1cc59151a4456180a}\label{baash_8c_a9308173e8a8a9cb1cc59151a4456180a}} 
-\index{baash.\+c@{baash.\+c}!operadores@{operadores}}
+\subsubsection[{\texorpdfstring{obtener\+\_\+entrada(char $\ast$entrada, char $\ast$argumentos[], char $\ast$fichero)}{obtener_entrada(char *entrada, char *argumentos[], char *fichero)}}]{\setlength{\rightskip}{0pt plus 5cm}void obtener\+\_\+entrada (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{entrada, }
+\item[{char $\ast$}]{argumentos\mbox{[}$\,$\mbox{]}, }
+\item[{char $\ast$}]{fichero}
+\end{DoxyParamCaption}
+)}\hypertarget{baash_8c_afa626168c9182e44ca4c847464ec0dab}{}\label{baash_8c_afa626168c9182e44ca4c847464ec0dab}
+Se parsea la entrada por teclado que contiene el path o directamente el programa a ejecutar en caso de estar en \$\+P\+A\+TH (como date) y los parametros para la ejecucion del mismo. El resultado del parseo se guarda en la variable argumentos. \index{baash.\+c@{baash.\+c}!operadores@{operadores}}
 \index{operadores@{operadores}!baash.\+c@{baash.\+c}}
-\subsubsection{\texorpdfstring{operadores()}{operadores()}}
-{\footnotesize\ttfamily int operadores (\begin{DoxyParamCaption}\item[{char $\ast$}]{argumentos\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
-
+\subsubsection[{\texorpdfstring{operadores(char $\ast$argumentos[])}{operadores(char *argumentos[])}}]{\setlength{\rightskip}{0pt plus 5cm}int operadores (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{argumentos\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{baash_8c_a9308173e8a8a9cb1cc59151a4456180a}{}\label{baash_8c_a9308173e8a8a9cb1cc59151a4456180a}
 
 
 Parsea argumentos de la linea de comandos. y detecta \textquotesingle{}\&\textquotesingle{}, \textquotesingle{}$<$\textquotesingle{}, \textquotesingle{}$>$\textquotesingle{} y \textquotesingle{}$\vert$\textquotesingle{}. 

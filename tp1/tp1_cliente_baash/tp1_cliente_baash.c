@@ -3,13 +3,15 @@
 * \brief Aplicación de Cliente baash. 
 * \author Sepulveda Federico
 * */
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <netdb.h> 
+#include <netdb.h>
+/// Tamaño de los buffer para sockets 
 #define TAM 2048
 
 /*!
@@ -22,7 +24,6 @@ int main( int argc, char *argv[] ) {
 	int sockfd, puerto,puerto_udp,sockfdUDP, n,fin=0;
 	struct sockaddr_in serv_addr;
 	struct hostent *server;
-	int terminar = 0;
 	int longitud=0,autenticacion=0;
 	char* entrada_parseada[TAM];
 	char entrada[TAM];
@@ -34,6 +35,7 @@ int main( int argc, char *argv[] ) {
 
 
 	printf( "\nPara establecer conexion con el servidor debe ingresar: connect usuario@numero_ip:port\n" );
+	printf( "\nCliente: " );
 	memset( entrada, '\0', TAM );// se coloca un \0 en entrada en la pocision al final de entrada
 	///\par Se le pide al usuario que ingrese connect seguido por usuario@numero_ip:puerto 
 	fgets( entrada, TAM-1, stdin );//se lee el archivo stdin (lee lo que se ingreso) y se copia en entrada DESCOMENTAR
@@ -43,7 +45,7 @@ int main( int argc, char *argv[] ) {
 	longitud=parsear_entrada(entrada,entrada_parseada," @:");
 
 	while( strcmp( "connect", entrada_parseada[0]) ){
-			printf( "\nComando desconocido debe ingresar connect seguido usuario@numero_ip:puerto del AWS" );
+			printf( "\nComando desconocido debe ingresar connect seguido usuario@numero_ip:puerto" );
 			printf( "\nCliente: " );
 			memset( entrada, '\0', TAM );// se coloca un \0 en entrada en la pocision al final de entrada
 			fgets( entrada, TAM-1, stdin );//se lee el archivo stdin (lee lo que se ingreso) y se copia en entrada 
@@ -93,7 +95,7 @@ int main( int argc, char *argv[] ) {
 			exit(0);
 		}
 
-		printf(entrada_parseada[1]);//nombre de usuario
+		printf("%s",entrada_parseada[1]);//nombre de usuario
 		memset( buffer, '\0', TAM ); 
 		n = read( sockfd, buffer, TAM ); // Recibo
 		if ( n < 0 ) {
@@ -156,7 +158,7 @@ int main( int argc, char *argv[] ) {
 			dest_addrUDP.sin_port = htons(puerto_udp);
 			dest_addrUDP.sin_addr = *( (struct in_addr *)server->h_addr );
 			memset( &(dest_addrUDP.sin_zero), '\0', 8 );
-			int tam_dir = sizeof(dest_addrUDP);
+			socklen_t tam_dir = sizeof(dest_addrUDP);
 			///\brief 		
 			n = sendto( sockfdUDP, (void *)"solicitud", 10, 0, (struct sockaddr *)&dest_addrUDP, tam_dir);
 			if ( n < 0 )

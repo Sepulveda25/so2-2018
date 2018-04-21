@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include "parsear_entrada.h"
-#include "prompt.h"
 #include "buscar_en_PATH.h"
 #include "cantidad_de_retrocesos.h"
 #include "armar_path_relativo.h"
-#include "armar_path_home.h"
 #include "pipe_argumentos.h"
 #include <sys/wait.h>
 #include <unistd.h>
@@ -15,6 +13,7 @@
 #include <fcntl.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+/// Tamaño de los buffer para sockets 
 #define BUFFSIZE 1024 
 #define READ 0
 #define WRITE 1
@@ -23,8 +22,14 @@ void obtener_entrada(char *entrada,char *argumentos[],char *fichero);
 int operadores(char *argumentos[]);
 void buscar_path_ejecutar(char *camino,char *argumentos[]);
 
-
-int baash(int newsockfd,int clilen) { 
+/*!
+  \param newsockfd es el file descriptor del socket TCP.
+  \param clilen es tamaño de la estructura del socket
+*/
+///\par baash.
+/// Esta funcion el el baash desarrollado en sistemas operativos I. Se le hizo una modificacion para poder desviar el STDIN y el STOUT por el socket
+///y para poder enviar archivos por el socket UDP. 
+int baash(int newsockfd,socklen_t clilen) { 
 	char entrada[BUFFSIZE+1];
 	char fichero[BUFFSIZE+1]; 
 	char* argumentos [BUFFSIZE+1];// = { "ls", "-l", "/usr/include", 0 };
@@ -65,14 +70,15 @@ int baash(int newsockfd,int clilen) {
 		exit( 1 );
 	}
 	//********************************************************************************
-	dup2(newsockfd, 1);// se desvia el STDOUT
-	dup2(newsockfd, 0);// se desvia el STDIN
+	/// Se desvia el STDOUT por el puerto TCP
+	dup2(newsockfd, WRITE);
+	/// Se desvia el STDIN por el puerto TCP 
+	dup2(newsockfd, READ);
 	while(1){
 		int operacion=0;
 		int comando;
 		int i=0;
-		// memset(entrada, '\0', BUFFSIZE );
-		// printf("strlen(entrada)=%d\n", strlen(entrada));
+	
 		memset(entrada, '\0', BUFFSIZE );
 		strcpy(entrada," ");
 		
@@ -89,17 +95,10 @@ int baash(int newsockfd,int clilen) {
 			fgets(entrada,sizeof(entrada),stdin);
 		}
         entrada[strlen(entrada)-1]='\0';
-		// obtener_entrada(entrada,argumentos,fichero);
 
 		i=parsear_entrada(entrada,argumentos," ");
 		strcpy(fichero,entrada);// fichero
 
-		
-		// printf("\nFichero:%s ",fichero); 
-		// while(argumentos[j]!=NULL){
-		// 	printf("\nArgumentos:%s ",argumentos[j]);
-		// 	j++;
-		// }
 		comando=strcmp(argumentos[0],"exit");
 		if ((feof(stdin))||(comando==0))
 		{
@@ -107,7 +106,6 @@ int baash(int newsockfd,int clilen) {
 			exit(0);
 		}
 		operacion=operadores(argumentos);
-		// printf("\nOperacion:%d ",operacion);
 		
 		
 		child_pid = vfork(); 
@@ -143,7 +141,6 @@ int baash(int newsockfd,int clilen) {
 					perror( "UDP lectura de socket" );
 					exit( 1 );
 				}
-				// printf( "Recibí_UDP: %s\n", buffer );
 				/// Se comienza a leer el archivo y enviar los datos leidos
 				fgets(buffer_archivo, BUFFSIZE, para_enviar);
 				while (!feof (para_enviar)){
@@ -215,9 +212,6 @@ int baash(int newsockfd,int clilen) {
 						exit(0);
 					}
 				}
-				
-
-				
 			}
 		}
 		else{//Proceso padre
@@ -290,12 +284,6 @@ void buscar_path_ejecutar(char *camino,char *argumentos[]){
 		cantidad_de_retrocesos(camino,prefix);
 		// printf("\nprefix:%s\n", prefix);
 		execv (prefix, argumentos);
-	}
-	else if((*(camino)=='~')&&(*(camino+1)=='/')){
-		// printf("\nPATH relativo (~/)");
-		armar_path_home(camino,prefix);
-		// printf("\nprefix:%s\n", prefix);
-		 execv (prefix, argumentos);
 	}
 	else {
 		// printf("\nPATH ver en $PATH");
