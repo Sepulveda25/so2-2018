@@ -142,7 +142,7 @@ int baash(int newsockfd,socklen_t clilen) {
 					exit( 1 );
 				}
 				/// Se comienza a leer el archivo y enviar los datos leidos
-				fgets(buffer_archivo, BUFFSIZE, para_enviar);
+				fgets(buffer_archivo, BUFFSIZE, para_enviar); //Ver con read() envia por bloques y devuelve 0 cuando llega al final en caso de problemas agregar un retardo con algun bloque
 				while (!feof (para_enviar)){
 					n = sendto( sockfdUDP, (void *)buffer_archivo, BUFFSIZE, 0, (struct sockaddr *)&serv_addrUDP, clilen  );
 					if ( n < 0 ) {perror( "escritura en socket" );exit( 1 );}
