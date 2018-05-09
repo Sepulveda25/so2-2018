@@ -33,70 +33,58 @@ int main(int argc, char const *argv[])
 		float suma_pulso_i=0;
 		float suma_pulso_q=0;
 		int n=0,correccion=0,num_gate=0;
-		int gate = gates_total * muestra_gate;
 
 		for(i=0;i<(valid_samples*2);i++) // ciclo para V_i,V_q y H_i H_q de cada pulso
 		{
-			if(gate>0){
-				fread( &pulso, sizeof(float), 1, pulsos); //pulsos i
-				suma_pulso_i=suma_pulso_i+pulso;
 
-				fread( &pulso, sizeof(float), 1, pulsos); //pulsos q
-				suma_pulso_q=suma_pulso_q+pulso;
-				n++;
-				if((!(i%intervalo))&&(resto>0)) // se corrige la cantidad de muestras cada cierto intervalo
-				{
-					resto--;
-					n--; //se le agrega una muestra mas para compensar la division no exacta
-					correccion=1;
-					
-				}
+			fread( &pulso, sizeof(float), 1, pulsos); //pulsos i
+			suma_pulso_i=suma_pulso_i+pulso;
 
-				if (muestra_gate==n) // se calcula el promedio de la muestra
-				{
-					n=0;
-					// printf("%d  , %d , %d\n", num_gate,canal,prueba);
-					if(correccion)
-					{
-						correccion=0;
-						gate_pulso [num_gate][canal]=(float)suma_pulso_i/(muestra_gate+1);
-						gate_pulso [num_gate][canal+1]=(float)suma_pulso_q/(muestra_gate+1);
-
-					}else
-					{
-						gate_pulso [num_gate][canal]=(float)suma_pulso_i/muestra_gate;
-						gate_pulso [num_gate][canal+1]=(float)suma_pulso_q/muestra_gate;
-					}
-					num_gate++;
-					suma_pulso_i = 0.000000;
-					suma_pulso_q = 0.000000;	
-				}
-
+			fread( &pulso, sizeof(float), 1, pulsos); //pulsos q
+			suma_pulso_q=suma_pulso_q+pulso;
+			n++;
+			if((!(i%intervalo))&&(resto>0)) // se corrige la cantidad de muestras cada cierto intervalo
+			{
+				resto--;
+				n--; //se le agrega una muestra mas para compensar la division no exacta
+				correccion=1;
 				
 			}
-			else
+
+			if (muestra_gate==n) // se calcula el promedio de la muestra
 			{
-				fread( &pulso, sizeof(float), 1, pulsos); 	
-	    		fread( &pulso, sizeof(float), 1, pulsos);	
-				
+				n=0;
+				if(correccion)
+				{
+					correccion=0;
+					gate_pulso [num_gate][canal]=suma_pulso_i/(muestra_gate+1);
+					gate_pulso [num_gate][canal+1]=suma_pulso_q/(muestra_gate+1);
+
+				}else
+				{
+					gate_pulso [num_gate][canal]=suma_pulso_i/muestra_gate;
+					gate_pulso [num_gate][canal+1]=suma_pulso_q/muestra_gate;
+				}
+				num_gate++;
+				suma_pulso_i = 0.000000;
+				suma_pulso_q = 0.000000;	
 			}
 
 			if (i == valid_samples){					
 		    	canal=canal+2;
 				num_gate=0;
 				resto= valid_samples%gates_total;
-		    	gate =  (gates_total * muestra_gate)+1;
 		    	suma_pulso_i = 0.000000;
 				suma_pulso_q = 0.000000;
 			}		
 		}
 		
 		canal=0;
-		prueba++;
+		// prueba++;
+		// printf("%d , %f\n", prueba,gate_pulso[prueba/2][4]);
 	}
 	 
 
-	printf("%d\n", prueba);
 	
 	fclose(pulsos);
 	return 0;
