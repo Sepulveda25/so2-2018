@@ -8,7 +8,6 @@
 #define RANGO_MAX 250
 #define RESOLUCION 0.5
 #define PULSOS_TOTAL 1600
-// #define TOTAL_GATES RANGO_MAX/RESOLUCION
 
 int main(int argc, char const *argv[])
 {	
