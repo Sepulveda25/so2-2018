@@ -7,7 +7,7 @@
 
 #define RANGO_MAX 250
 #define RESOLUCION 0.5
-#define PULSOS_TOTAL 3200
+#define PULSOS_TOTAL 1600
 // #define TOTAL_GATES RANGO_MAX/RESOLUCION
 
 int main(int argc, char const *argv[])
@@ -16,9 +16,8 @@ int main(int argc, char const *argv[])
 	int i,j;
 	int canal=0;
 	float pulso=0;
-	// float gate_pulso[500][PULSOS_TOTAL];
 
-	float gate_pulso[500][1600];
+	float gate_pulso[500][PULSOS_TOTAL];
 	float real_aux;
 	float compl_aux;
 
