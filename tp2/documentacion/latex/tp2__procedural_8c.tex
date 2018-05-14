@@ -1,0 +1,56 @@
+\hypertarget{tp2__procedural_8c}{}\section{procedural/tp2\+\_\+procedural.c File Reference}
+\label{tp2__procedural_8c}\index{procedural/tp2\+\_\+procedural.\+c@{procedural/tp2\+\_\+procedural.\+c}}
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$complex.\+h$>$}\\*
+Include dependency graph for tp2\+\_\+procedural.\+c\+:
+% FIG 0
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{tp2__procedural_8c_a3d4b963d62e2f1b5c3799d8e333610ec}{R\+A\+N\+G\+O\+\_\+\+M\+AX}~250
+\item 
+\#define \hyperlink{tp2__procedural_8c_a2cfe1d594de0fc0b85a2592bf7b0bff8}{R\+E\+S\+O\+L\+U\+C\+I\+ON}~0.\+5
+\item 
+\#define \hyperlink{tp2__procedural_8c_ab010e00651408a33d5086c949112050d}{P\+U\+L\+S\+O\+S\+\_\+\+T\+O\+T\+AL}~1600
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{tp2__procedural_8c_abf9e6b7e6f15df4b525a2e7705ba3089}{main} (int argc, char const $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{tp2\+\_\+procedural.\+c@{tp2\+\_\+procedural.\+c}!P\+U\+L\+S\+O\+S\+\_\+\+T\+O\+T\+AL@{P\+U\+L\+S\+O\+S\+\_\+\+T\+O\+T\+AL}}
+\index{P\+U\+L\+S\+O\+S\+\_\+\+T\+O\+T\+AL@{P\+U\+L\+S\+O\+S\+\_\+\+T\+O\+T\+AL}!tp2\+\_\+procedural.\+c@{tp2\+\_\+procedural.\+c}}
+\subsubsection[{\texorpdfstring{P\+U\+L\+S\+O\+S\+\_\+\+T\+O\+T\+AL}{PULSOS_TOTAL}}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\+U\+L\+S\+O\+S\+\_\+\+T\+O\+T\+AL~1600}\hypertarget{tp2__procedural_8c_ab010e00651408a33d5086c949112050d}{}\label{tp2__procedural_8c_ab010e00651408a33d5086c949112050d}
+\index{tp2\+\_\+procedural.\+c@{tp2\+\_\+procedural.\+c}!R\+A\+N\+G\+O\+\_\+\+M\+AX@{R\+A\+N\+G\+O\+\_\+\+M\+AX}}
+\index{R\+A\+N\+G\+O\+\_\+\+M\+AX@{R\+A\+N\+G\+O\+\_\+\+M\+AX}!tp2\+\_\+procedural.\+c@{tp2\+\_\+procedural.\+c}}
+\subsubsection[{\texorpdfstring{R\+A\+N\+G\+O\+\_\+\+M\+AX}{RANGO_MAX}}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\+A\+N\+G\+O\+\_\+\+M\+AX~250}\hypertarget{tp2__procedural_8c_a3d4b963d62e2f1b5c3799d8e333610ec}{}\label{tp2__procedural_8c_a3d4b963d62e2f1b5c3799d8e333610ec}
+\index{tp2\+\_\+procedural.\+c@{tp2\+\_\+procedural.\+c}!R\+E\+S\+O\+L\+U\+C\+I\+ON@{R\+E\+S\+O\+L\+U\+C\+I\+ON}}
+\index{R\+E\+S\+O\+L\+U\+C\+I\+ON@{R\+E\+S\+O\+L\+U\+C\+I\+ON}!tp2\+\_\+procedural.\+c@{tp2\+\_\+procedural.\+c}}
+\subsubsection[{\texorpdfstring{R\+E\+S\+O\+L\+U\+C\+I\+ON}{RESOLUCION}}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\+E\+S\+O\+L\+U\+C\+I\+ON~0.\+5}\hypertarget{tp2__procedural_8c_a2cfe1d594de0fc0b85a2592bf7b0bff8}{}\label{tp2__procedural_8c_a2cfe1d594de0fc0b85a2592bf7b0bff8}
+
+
+\subsection{Function Documentation}
+\index{tp2\+\_\+procedural.\+c@{tp2\+\_\+procedural.\+c}!main@{main}}
+\index{main@{main}!tp2\+\_\+procedural.\+c@{tp2\+\_\+procedural.\+c}}
+\subsubsection[{\texorpdfstring{main(int argc, char const $\ast$argv[])}{main(int argc, char const *argv[])}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char const $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{tp2__procedural_8c_abf9e6b7e6f15df4b525a2e7705ba3089}{}\label{tp2__procedural_8c_abf9e6b7e6f15df4b525a2e7705ba3089}
+Se calcula la autocorrelacion para la matriz de datos gate\+\_\+pulso y se va guardando el resultado un achivo binario
+
+Primero se calcula en modulo para cada señal i y q
+
+Se suman los productos
+
+Se calcula el promedio de los productos acumulados
+
+Se guarda en el archivo resultados los valores de la autocorrelacion de c/gate 

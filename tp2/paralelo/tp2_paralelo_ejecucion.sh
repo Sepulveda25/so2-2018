@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# Modo de uso:
-
-
-if [ $1 ]; then
+if [ $1 ]; then # Se verifica que se ingrese el parametro numeo de hilos
  	hilos=$1
 else
 

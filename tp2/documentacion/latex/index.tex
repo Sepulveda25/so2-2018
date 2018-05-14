@@ -1,0 +1,26 @@
+Esta aplicacion en un procesador dopple, que lee los datos que son muestra de un A\+DC de un archivo binario pulso.\+iq y devuelve un resultado en un archivo binaro que contiene la autocorrelacion de los pulsos recibidos. Lenguaje\+: C.===================
+
+\begin{DoxyAuthor}{Author}
+Sepulveda Federico (\href{mailto:federico.sepulveda@alumnos.unc.edu.ar}{\tt federico.\+sepulveda@alumnos.\+unc.\+edu.\+ar}) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+Mayo, 2018
+\end{DoxyDate}
+\begin{DoxyParagraph}{I\+N\+T\+R\+O\+D\+U\+C\+C\+IÓN\+:}
+Esta aplicacion esta desarrollada de dos maneras, una sin explotar el paralelismo y la otra explotando el paralelismo utilizando la biblioteca Open\+M\+PI
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{I\+N\+S\+T\+A\+L\+A\+C\+IÓN y U\+T\+I\+L\+I\+Z\+A\+C\+IÓN\+:}
+Para la aplicaion procedural solo basta con ejecutar la aplicacion y esta genera un archivo binario llamado resultados con los datos~\newline
+A continuación se detallan la ejecucion\+:~\newline
+\begin{DoxyVerb}En el directorio /tp1/tp1_servidor_baash ejecutar:
+"make"                                  --> Compila el proyecto y genera ejecutable.
+"./tp2_procedural"              --> Corre la aplicacion.
+\end{DoxyVerb}
+
+\end{DoxyParagraph}
+Para la aplicaion paralela se debe ejecutar pasando como parametro la cantidad de hilos~\newline
+y esta genera un archivo binario llamado resultados con los datos~\newline
+\begin{DoxyVerb}En el directorio /tp1/tp1_cliente_baash ejecutar:
+"make"                                  --> Compila el proyecto y genera ejecutable.
+"./tp2_procedural <Numero de Hilos>"                    --> Corre la aplicacion con la cantidad de hilos pasada como parametro.\end{DoxyVerb}
+ 
