@@ -96,15 +96,16 @@ int main( int argc, char *argv[] ) {
 			exit(0);
 		}
 
-		printf("%s",entrada_parseada[1]);//nombre de usuario
+		// printf("%s",entrada_parseada[1]);//nombre de usuario
 		memset( buffer, '\0', TAM ); 
+		for(int j=0;j<600000;j++){} /// Retardo para enviar los datos por UDP
 		n = read( sockfd, buffer, TAM ); // Recibo
 		if ( n < 0 ) {
 			perror( "lectura de socket" );
 			exit( 1 );
 		}
 		buffer[strlen(buffer)-1] = '\0';
-		printf( "%s", buffer );/// se imprime promt()
+		printf( "%s%s", entrada_parseada[1],buffer );/// se imprime promt()
 
 		fflush(0);
 		memset( buffer, '\0', TAM );
@@ -115,7 +116,6 @@ int main( int argc, char *argv[] ) {
 			strcpy(buffer,"-1\n");
 
 		}
-		
 		n = write( sockfd, buffer, strlen(buffer) ); // Envio
 		if ( n < 0 ) {
 			perror( "escritura de socket" );
@@ -123,7 +123,6 @@ int main( int argc, char *argv[] ) {
 		}
 		strcpy(buffer_axiliar,buffer);
 		longitud=parsear_entrada(buffer_axiliar,buffer_parseado," ");// se parsea la entrada para buscar las variables
-
 		
 		memset( buffer, '\0', TAM ); 
 		n = read( sockfd, buffer, TAM ); // Recibo
@@ -144,10 +143,6 @@ int main( int argc, char *argv[] ) {
 			strcpy(nombre_archivo,buffer_parseado[1]);
 			nombre_archivo[strlen(nombre_archivo)-1]='\0'; // se quita el "enter" (\n) del nombre
 
-			//######################ANTES#############################
-			// datos = fopen(nombre_archivo, "wb"); // se crea en el cliente un archivo con el nombre del archivo a descargar
-			// if (datos == NULL) {	perror("File not found!\n");}
-			//#################################################
 			datos=open(nombre_archivo,O_RDWR|O_CREAT,0666); // se crea en el cliente un archivo con el nombre del archivo a descargar
 
 			memset( buffer_archivo, '\0', TAM+1 );
@@ -200,7 +195,6 @@ int main( int argc, char *argv[] ) {
 			close(datos);
 
 		}
-		
 	}
 	return 0;
 } 

@@ -37,7 +37,6 @@ int baash(int newsockfd,socklen_t clilen) {
     char* argumentosSalida [BUFFSIZE+1];
     char posicion[BUFFSIZE+1];
     char hostname[BUFFSIZE+1];
-    char buffer[BUFFSIZE+1];
     struct cli_addr;
 	pid_t child_pid;
 	int status;
@@ -48,7 +47,6 @@ int baash(int newsockfd,socklen_t clilen) {
 	int sockfdUDP;
 	int puerto_udp = 6020;
 	//Variables de configuracion archivos
-	// FILE *para_enviar; //ANTES ********
 	int para_enviar=0;
 
 	char buffer_archivo[BUFFSIZE]; 	
@@ -121,8 +119,9 @@ int baash(int newsockfd,socklen_t clilen) {
 				if(chdir(argumentos[1])==-1){
 					printf("No existe el fichero ó directorio \n");
 				}else{
-					printf(" \n"); 
+					printf(" \n");
 				}
+				for(int j=0;j<600000;j++){} /// Retardo para volver a recibir un comando
 			}
 			///\par Comando "descargar".
 			/// Esta parte lee el archivo que se solicito.
@@ -133,8 +132,6 @@ int baash(int newsockfd,socklen_t clilen) {
 			else if(strcmp(argumentos[0],"descarga")==0){
 
 				printf("Preparando archivo %s....\n",argumentos[1]); // respueta OBLIGATORIA
-				
-				// para_enviar = fopen(argumentos[1],"rb"); //ANTES ***************
 				para_enviar = open(argumentos[1],O_RDONLY); //
 				
 				//******************** envio UDP********************************
@@ -145,35 +142,22 @@ int baash(int newsockfd,socklen_t clilen) {
 					perror( "UDP lectura de socket" );
 					exit( 1 );
 				}
-				/// Se comienza a leer el archivo y enviar los datos leidos
-				// fgets(buffer_archivo, BUFFSIZE, para_enviar); //Ver con read() envia por bloques y devuelve 0 cuando llega al final en caso de problemas agregar un retardo con algun bloque
 				
-				//#############################ANTES########################################
-				// while (!feof (para_enviar)){
-				// 	n = sendto( sockfdUDP, (void *)buffer_archivo, BUFFSIZE, 0, (struct sockaddr *)&serv_addrUDP, clilen  );
-				// 	if ( n < 0 ) {perror( "escritura en socket" );exit( 1 );}
-				// 	fgets(buffer_archivo, BUFFSIZE, para_enviar);		
-
-				// }
-
-				//##########################################################################
-
+				/// Se comienza a leer el archivo y enviar los datos leidos
 				int cant_bytes=read(para_enviar,buffer_archivo,BUFFSIZE);
 				while(cant_bytes>0){
 					n = sendto( sockfdUDP, (void *)buffer_archivo, BUFFSIZE, 0, (struct sockaddr *)&serv_addrUDP, clilen  );
-					memset( buffer_archivo, '\0', BUFFSIZE+1 );
-					for(int j=0;j<600000;j++){}
+					for(int j=0;j<60000;j++){} /// Retardo para enviar los datos por UDP
 					if ( n < 0 ) {perror( "escritura en socket" );exit( 1 );}
+					memset( buffer_archivo, '\0', BUFFSIZE+1 );
 					cant_bytes=read(para_enviar,buffer_archivo,BUFFSIZE);
 				}
-
 
 				/// Se avisa al destino que no hay mas datos por enviar
 				n = sendto( sockfdUDP, (void *)"finDeLectura", 13, 0, (struct sockaddr *)&serv_addrUDP, clilen);		
 			
 				//**************************************************************
-			
-				// fclose(para_enviar); //se cierra el archivo #############ANTES
+		
 				close(para_enviar);//se cierra el archivo
 			}
 			else{
@@ -313,7 +297,8 @@ void buscar_path_ejecutar(char *camino,char *argumentos[]){
 		{
 			printf("No existe el comando\n");
 			// printf("este es verdadero\n" );
-			exit(0);
+			for(int j=0;j<600000;j++){} /// Retardo para volver a recibir un comando
+			// exit(0);
 		}
 		else
 		{
