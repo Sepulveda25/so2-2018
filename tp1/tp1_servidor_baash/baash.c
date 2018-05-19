@@ -48,7 +48,9 @@ int baash(int newsockfd,socklen_t clilen) {
 	int sockfdUDP;
 	int puerto_udp = 6020;
 	//Variables de configuracion archivos
-	FILE *para_enviar;
+	// FILE *para_enviar; //ANTES ********
+	int para_enviar=0;
+
 	char buffer_archivo[BUFFSIZE]; 	
 	
 	//***********************Cofiguracion Socket UDP*************************
@@ -131,30 +133,48 @@ int baash(int newsockfd,socklen_t clilen) {
 			else if(strcmp(argumentos[0],"descarga")==0){
 
 				printf("Preparando archivo %s....\n",argumentos[1]); // respueta OBLIGATORIA
-				para_enviar = fopen(argumentos[1],"r"); 
+				
+				// para_enviar = fopen(argumentos[1],"rb"); //ANTES ***************
+				para_enviar = open(argumentos[1],O_RDONLY); //
 				
 				//******************** envio UDP********************************
 				
 				/// Se realiza la configuracion para envio por protocolo UDP
-				n = recvfrom( sockfdUDP, buffer, BUFFSIZE-1, 0, (struct sockaddr *)&serv_addrUDP, &clilen );
+				n = recvfrom( sockfdUDP, buffer_archivo, BUFFSIZE-1, 0, (struct sockaddr *)&serv_addrUDP, &clilen );
 				if ( n < 0 ) {
 					perror( "UDP lectura de socket" );
 					exit( 1 );
 				}
 				/// Se comienza a leer el archivo y enviar los datos leidos
-				fgets(buffer_archivo, BUFFSIZE, para_enviar); //Ver con read() envia por bloques y devuelve 0 cuando llega al final en caso de problemas agregar un retardo con algun bloque
-				while (!feof (para_enviar)){
-					n = sendto( sockfdUDP, (void *)buffer_archivo, BUFFSIZE, 0, (struct sockaddr *)&serv_addrUDP, clilen  );
-					if ( n < 0 ) {perror( "escritura en socket" );exit( 1 );}
-					fgets(buffer_archivo, BUFFSIZE, para_enviar);		
+				// fgets(buffer_archivo, BUFFSIZE, para_enviar); //Ver con read() envia por bloques y devuelve 0 cuando llega al final en caso de problemas agregar un retardo con algun bloque
+				
+				//#############################ANTES########################################
+				// while (!feof (para_enviar)){
+				// 	n = sendto( sockfdUDP, (void *)buffer_archivo, BUFFSIZE, 0, (struct sockaddr *)&serv_addrUDP, clilen  );
+				// 	if ( n < 0 ) {perror( "escritura en socket" );exit( 1 );}
+				// 	fgets(buffer_archivo, BUFFSIZE, para_enviar);		
 
+				// }
+
+				//##########################################################################
+
+				int cant_bytes=read(para_enviar,buffer_archivo,BUFFSIZE);
+				while(cant_bytes>0){
+					n = sendto( sockfdUDP, (void *)buffer_archivo, BUFFSIZE, 0, (struct sockaddr *)&serv_addrUDP, clilen  );
+					memset( buffer_archivo, '\0', BUFFSIZE+1 );
+					for(int j=0;j<600000;j++){}
+					if ( n < 0 ) {perror( "escritura en socket" );exit( 1 );}
+					cant_bytes=read(para_enviar,buffer_archivo,BUFFSIZE);
 				}
+
+
 				/// Se avisa al destino que no hay mas datos por enviar
 				n = sendto( sockfdUDP, (void *)"finDeLectura", 13, 0, (struct sockaddr *)&serv_addrUDP, clilen);		
 			
 				//**************************************************************
 			
-				fclose(para_enviar); //se cierra el archivo
+				// fclose(para_enviar); //se cierra el archivo #############ANTES
+				close(para_enviar);//se cierra el archivo
 			}
 			else{
 				if(operacion==2){ // redireccionar la entrada

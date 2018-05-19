@@ -11,8 +11,9 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <fcntl.h>
 /// Tamaño de los buffer para sockets 
-#define TAM 2048
+#define TAM 1024
 
 /*!
   Función principal del cliente.
@@ -136,12 +137,19 @@ int main( int argc, char *argv[] ) {
 		/// Se abre un archivo con el nombre del archivo que se solicito descargar del servidor 
 		///donde se iran almacenando los dato recibidos.
 		if((strcmp( "descarga", buffer_parseado[0]))==0){ 
-			FILE *datos;
+			// FILE *datos; //############ANTES
+			int datos=0;
+
 			memset( nombre_archivo, '\0', TAM );
 			strcpy(nombre_archivo,buffer_parseado[1]);
 			nombre_archivo[strlen(nombre_archivo)-1]='\0'; // se quita el "enter" (\n) del nombre
-			datos = fopen(nombre_archivo, "w"); // se crea en el cliente un archivo con el nombre del archivo a descargar
-			if (datos == NULL) {	perror("File not found!\n");}
+
+			//######################ANTES#############################
+			// datos = fopen(nombre_archivo, "wb"); // se crea en el cliente un archivo con el nombre del archivo a descargar
+			// if (datos == NULL) {	perror("File not found!\n");}
+			//#################################################
+			datos=open(nombre_archivo,O_RDWR|O_CREAT,0666); // se crea en el cliente un archivo con el nombre del archivo a descargar
+
 			memset( buffer_archivo, '\0', TAM+1 );
 			fin=0;
 			puerto_udp=6020;
@@ -170,14 +178,17 @@ int main( int argc, char *argv[] ) {
 			///Recibe respuesta del Server de que el archivo se transfirió correctamente
 			printf( "CREANDO ARCHIVO %s\n",buffer_parseado[1]);
 			while(!fin){
+				memset( buffer_archivo, '\0', TAM+1 );
 				n = recvfrom( sockfdUDP, (void *)buffer_archivo, TAM, 0, (struct sockaddr *)&dest_addrUDP, &tam_dir);
 				if ( n < 0 ){perror( "Lectura de socket" );exit( 1 );}
 				// printf( "Respuesta: %s\n", buffer_archivo );
 				if( !strcmp( "finDeLectura", buffer_archivo) ){
 					fin=1;
 				}else{
-					n = fwrite(buffer_archivo, sizeof(char), strlen(buffer_archivo), datos);
-					if(n < 0){	printf("File not written!\n");}
+					// n = fwrite(buffer_archivo, sizeof(char), strlen(buffer_archivo), datos); //########################ANTES
+					// if(n < 0){	printf("File not written!\n");}
+
+					write(datos,buffer_archivo,TAM);
 				}
 			}	
 			
@@ -185,7 +196,8 @@ int main( int argc, char *argv[] ) {
 			
 			//******************************************************
 			printf( "ARCHIVO %s CREADO\n",buffer_parseado[1]);
-			fclose(datos);
+			// fclose(datos);
+			close(datos);
 
 		}
 		
