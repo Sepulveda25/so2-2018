@@ -296,17 +296,12 @@ void buscar_path_ejecutar(char *camino,char *argumentos[]){
 		if(strcmp(prefix,"-1")==0)
 		{
 			printf("No existe el comando\n");
-			// printf("este es verdadero\n" );
-			for(int j=0;j<600000;j++){} /// Retardo para volver a recibir un comando
-			// exit(0);
 		}
 		else
 		{
-			// printf("este es falso\n");
 			execv (prefix, argumentos);
-			// exit(0);
 		}	             
-        	
+        for(int j=0;j<600000;j++){} /// Retardo para volver a recibir un comando	
 	}	
 	return;
 }
