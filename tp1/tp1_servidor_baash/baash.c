@@ -48,7 +48,6 @@ int baash(int newsockfd,socklen_t clilen) {
 	int puerto_udp = 6020;
 	//Variables de configuracion archivos
 	int para_enviar=0;
-
 	char buffer_archivo[BUFFSIZE]; 	
 	
 	//***********************Cofiguracion Socket UDP*************************
@@ -93,7 +92,16 @@ int baash(int newsockfd,socklen_t clilen) {
 			fflush(0);
 		
 			fgets(entrada,sizeof(entrada),stdin);
-		}
+			
+			if (((strlen(entrada)==1))||(entrada[0]==32)){ /// Deteccion de enter solo
+				printf("\n"); /// Respuesta obligatoria al cliente 
+				memset(entrada, '\0', BUFFSIZE );
+				strcpy(entrada," ");
+			}
+			// printf("Y entrada es:%d FIN",strlen(entrada));
+			for(int j=0;j<6000000;j++){} /// Retardo para volver a recibir un comando
+
+		}	
         entrada[strlen(entrada)-1]='\0';
 
 		i=parsear_entrada(entrada,argumentos," ");
