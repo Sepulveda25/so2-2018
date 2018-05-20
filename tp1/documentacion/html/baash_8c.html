@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Tp1 Socket: tp1/tp1_servidor_baash/baash.c File Reference</title>
+<title>Tp1 Socket: tp1_servidor_baash/baash.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -79,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_742e354459e5084a76a330f62c51a308.html">tp1</a></li><li class="navelem"><a class="el" href="dir_9e98bb166943fbdc84e77af638ab0116.html">tp1_servidor_baash</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_e487d113128696407f553f08dd9452dd.html">tp1_servidor_baash</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -108,7 +108,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for baash.c:</div>
 <div class="dyncontent">
-<div class="center"><img src="baash_8c__incl.png" border="0" usemap="#tp1_2tp1__servidor__baash_2baash_8c" alt=""/></div>
+<div class="center"><img src="baash_8c__incl.png" border="0" usemap="#tp1__servidor__baash_2baash_8c" alt=""/></div>
 <!-- MAP 0 -->
 </div>
 </div><table class="memberdecls">
@@ -208,9 +208,14 @@ Functions</h2></td></tr>
 <dl class="section user"><dt>baash.</dt><dd>Esta funcion el el baash desarrollado en sistemas operativos I. Se le hizo una modificacion para poder desviar el STDIN y el STOUT por el socket y para poder enviar archivos por el socket UDP. </dd></dl>
 <p>Se desvia el STDOUT por el puerto TCP</p>
 <p>Se desvia el STDIN por el puerto TCP</p>
+<p>Deteccion de enter solo</p>
+<p>Respuesta obligatoria al cliente</p>
+<p>Retardo para volver a recibir un comando</p>
+<p>Retardo para volver a recibir un comando</p>
 <dl class="section user"><dt>Comando "descargar".</dt><dd>Esta parte lee el archivo que se solicito. Se recorre por lineas y se comienza enviar los datos al cliente utilizando el socket UDP. Cuando se llega al final del archivo se envia la cadena "finDeLectura" al cliente, que este interpreta que no hay mas datos para recibir. Una vez finalizado el envio el achivo se cierra.</dd></dl>
 <p>Se realiza la configuracion para envio por protocolo UDP</p>
 <p>Se comienza a leer el archivo y enviar los datos leidos</p>
+<p>Retardo para enviar los datos por UDP</p>
 <p>Se avisa al destino que no hay mas datos por enviar </p>
 
 </div>
@@ -240,6 +245,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Se identifica que tipo de path es (absoluto, relativo, etc) </p>
+<p>Retardo para volver a recibir un comando </p>
 
 </div>
 </div>

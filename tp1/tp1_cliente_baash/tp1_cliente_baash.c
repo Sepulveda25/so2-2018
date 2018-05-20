@@ -96,9 +96,7 @@ int main( int argc, char *argv[] ) {
 			exit(0);
 		}
 
-		// printf("%s",entrada_parseada[1]);//nombre de usuario
 		memset( buffer, '\0', TAM ); 
-		for(int j=0;j<600000;j++){} /// Retardo para enviar los datos por UDP
 		n = read( sockfd, buffer, TAM ); // Recibo
 		if ( n < 0 ) {
 			perror( "lectura de socket" );
@@ -111,11 +109,7 @@ int main( int argc, char *argv[] ) {
 		memset( buffer, '\0', TAM );
 		fgets( buffer, sizeof(buffer), stdin );
 		// printf("tamaño %d\n", strlen(buffer));
-		// if (strlen(buffer)==1){ //se detecta que se esta por enviar un caracter nulo
-		// 	memset(buffer, '\0', TAM );
-		// 	strcpy(buffer,"-1\n");
 
-		// }
 		n = write( sockfd, buffer, strlen(buffer) ); // Envio
 		if ( n < 0 ) {
 			perror( "escritura de socket" );
@@ -132,11 +126,11 @@ int main( int argc, char *argv[] ) {
 		}
 		buffer[strlen(buffer)] = '\n';
 		printf( "%s", buffer ); // Recibo ejecucion de comando
+		
 		///\par Comando "descargar".
 		/// Se abre un archivo con el nombre del archivo que se solicito descargar del servidor 
 		///donde se iran almacenando los dato recibidos.
 		if((strcmp( "descarga", buffer_parseado[0]))==0){ 
-			// FILE *datos; //############ANTES
 			int datos=0;
 
 			memset( nombre_archivo, '\0', TAM );
@@ -147,7 +141,7 @@ int main( int argc, char *argv[] ) {
 
 			memset( buffer_archivo, '\0', TAM+1 );
 			fin=0;
-			puerto_udp=6020;
+			puerto_udp=puerto;
 			//*********************************************Recepcion UDP**********************************************************
 			///Se copia el contenido del archivo recibido en un archivo 
 			struct sockaddr_in dest_addrUDP;
@@ -162,7 +156,7 @@ int main( int argc, char *argv[] ) {
 			dest_addrUDP.sin_addr = *( (struct in_addr *)server->h_addr );
 			memset( &(dest_addrUDP.sin_zero), '\0', 8 );
 			socklen_t tam_dir = sizeof(dest_addrUDP);
-			///\brief 		
+			///Se envia mensaje UDP al servidor para comenzar la trasferencia
 			n = sendto( sockfdUDP, (void *)"solicitud", 10, 0, (struct sockaddr *)&dest_addrUDP, tam_dir);
 			if ( n < 0 )
 			{
@@ -180,17 +174,13 @@ int main( int argc, char *argv[] ) {
 				if( !strcmp( "finDeLectura", buffer_archivo) ){
 					fin=1;
 				}else{
-					// n = fwrite(buffer_archivo, sizeof(char), strlen(buffer_archivo), datos); //########################ANTES
-					// if(n < 0){	printf("File not written!\n");}
 
 					write(datos,buffer_archivo,TAM);
 				}
 			}	
 			
-			//~ printf( "Respuesta: %s\n", buffer_archivo );
-			
 			//******************************************************
-			printf( "ARCHIVO %s CREADO\n",buffer_parseado[1]);
+			printf( "ARCHIVO %sCREADO\n",buffer_parseado[1]);
 			// fclose(datos);
 			close(datos);
 

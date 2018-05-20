@@ -1,8 +1,8 @@
-digraph "tp1/tp1_cliente_baash/tp1_cliente_baash.c"
+digraph "tp1_cliente_baash/tp1_cliente_baash.c"
 {
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="tp1/tp1_cliente_baash\l/tp1_cliente_baash.c",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 [label="tp1_cliente_baash/tp1\l_cliente_baash.c",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
   Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
   Node2 [label="unistd.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
   Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
@@ -19,4 +19,6 @@ digraph "tp1/tp1_cliente_baash/tp1_cliente_baash.c"
   Node8 [label="netinet/in.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
   Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid"];
   Node9 [label="netdb.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node1 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
+  Node10 [label="fcntl.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
 }

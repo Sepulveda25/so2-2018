@@ -1,14 +1,14 @@
-digraph "tp1/tp1_servidor_baash/parsear_entrada.h"
+digraph "tp1_servidor_baash/parsear_entrada.h"
 {
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="tp1/tp1_servidor_baash\l/parsear_entrada.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 [label="tp1_servidor_baash\l/parsear_entrada.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
   Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid"];
-  Node2 [label="tp1/tp1_servidor_baash\l/armar_path_relativo.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$armar__path__relativo_8c.html"];
+  Node2 [label="tp1_servidor_baash\l/armar_path_relativo.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$armar__path__relativo_8c.html"];
   Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid"];
-  Node3 [label="tp1/tp1_servidor_baash\l/baash.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$baash_8c.html"];
+  Node3 [label="tp1_servidor_baash\l/baash.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$baash_8c.html"];
   Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid"];
-  Node4 [label="tp1/tp1_servidor_baash\l/buscar_en_PATH.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$buscar__en___p_a_t_h_8c.html"];
+  Node4 [label="tp1_servidor_baash\l/buscar_en_PATH.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$buscar__en___p_a_t_h_8c.html"];
   Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid"];
-  Node5 [label="tp1/tp1_servidor_baash\l/cantidad_de_retrocesos.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$cantidad__de__retrocesos_8c.html"];
+  Node5 [label="tp1_servidor_baash\l/cantidad_de_retrocesos.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$cantidad__de__retrocesos_8c.html"];
 }

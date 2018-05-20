@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Tp1 Socket: tp1/tp1_cliente_baash/tp1_cliente_baash.c File Reference</title>
+<title>Tp1 Socket: tp1_cliente_baash/tp1_cliente_baash.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -79,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_742e354459e5084a76a330f62c51a308.html">tp1</a></li><li class="navelem"><a class="el" href="dir_5d327ad74786cbeabdf6cd1f81d89247.html">tp1_cliente_baash</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d534c9605649147efa08ebb09a97d4b3.html">tp1_cliente_baash</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -98,17 +98,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &lt;sys/socket.h&gt;</code><br />
 <code>#include &lt;netinet/in.h&gt;</code><br />
 <code>#include &lt;netdb.h&gt;</code><br />
+<code>#include &lt;fcntl.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tp1_cliente_baash.c:</div>
 <div class="dyncontent">
-<div class="center"><img src="tp1__cliente__baash_8c__incl.png" border="0" usemap="#tp1_2tp1__cliente__baash_2tp1__cliente__baash_8c" alt=""/></div>
-<map name="tp1_2tp1__cliente__baash_2tp1__cliente__baash_8c" id="tp1_2tp1__cliente__baash_2tp1__cliente__baash_8c">
+<div class="center"><img src="tp1__cliente__baash_8c__incl.png" border="0" usemap="#tp1__cliente__baash_2tp1__cliente__baash_8c" alt=""/></div>
+<map name="tp1__cliente__baash_2tp1__cliente__baash_8c" id="tp1__cliente__baash_2tp1__cliente__baash_8c">
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ae0b4816fb45161ef9da5e6d6134ee28a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tp1__cliente__baash_8c.html#ae0b4816fb45161ef9da5e6d6134ee28a">TAM</a>&#160;&#160;&#160;2048</td></tr>
+<tr class="memitem:ae0b4816fb45161ef9da5e6d6134ee28a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tp1__cliente__baash_8c.html#ae0b4816fb45161ef9da5e6d6134ee28a">TAM</a>&#160;&#160;&#160;1024</td></tr>
 <tr class="memdesc:ae0b4816fb45161ef9da5e6d6134ee28a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tamaño de los buffer para sockets.  <a href="#ae0b4816fb45161ef9da5e6d6134ee28a">More...</a><br /></td></tr>
 <tr class="separator:ae0b4816fb45161ef9da5e6d6134ee28a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -127,7 +128,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TAM&#160;&#160;&#160;2048</td>
+          <td class="memname">#define TAM&#160;&#160;&#160;1024</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -211,6 +212,7 @@ Functions</h2></td></tr>
 <p>se imprime promt()</p>
 <dl class="section user"><dt>Comando "descargar".</dt><dd>Se abre un archivo con el nombre del archivo que se solicito descargar del servidor donde se iran almacenando los dato recibidos.</dd></dl>
 <p>Se copia el contenido del archivo recibido en un archivo</p>
+<p>Se envia mensaje UDP al servidor para comenzar la trasferencia</p>
 <p>Recibe respuesta del Server de que el archivo se transfirió correctamente </p>
 
 </div>

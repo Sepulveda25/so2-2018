@@ -1,8 +1,8 @@
-digraph "tp1/tp1_servidor_baash/buscar_en_PATH.c"
+digraph "tp1_servidor_baash/buscar_en_PATH.c"
 {
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="tp1/tp1_servidor_baash\l/buscar_en_PATH.c",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 [label="tp1_servidor_baash\l/buscar_en_PATH.c",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
   Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
   Node2 [label="parsear_entrada.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$parsear__entrada_8h.html"];
   Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid"];

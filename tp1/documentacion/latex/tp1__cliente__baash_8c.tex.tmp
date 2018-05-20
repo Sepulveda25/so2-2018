@@ -1,5 +1,5 @@
-\hypertarget{tp1__cliente__baash_8c}{}\section{tp1/tp1\+\_\+cliente\+\_\+baash/tp1\+\_\+cliente\+\_\+baash.c File Reference}
-\label{tp1__cliente__baash_8c}\index{tp1/tp1\+\_\+cliente\+\_\+baash/tp1\+\_\+cliente\+\_\+baash.\+c@{tp1/tp1\+\_\+cliente\+\_\+baash/tp1\+\_\+cliente\+\_\+baash.\+c}}
+\hypertarget{tp1__cliente__baash_8c}{}\section{tp1\+\_\+cliente\+\_\+baash/tp1\+\_\+cliente\+\_\+baash.c File Reference}
+\label{tp1__cliente__baash_8c}\index{tp1\+\_\+cliente\+\_\+baash/tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash/tp1\+\_\+cliente\+\_\+baash.\+c}}
 {\ttfamily \#include $<$unistd.\+h$>$}\\*
 {\ttfamily \#include $<$stdio.\+h$>$}\\*
 {\ttfamily \#include $<$stdlib.\+h$>$}\\*
@@ -8,12 +8,13 @@
 {\ttfamily \#include $<$sys/socket.\+h$>$}\\*
 {\ttfamily \#include $<$netinet/in.\+h$>$}\\*
 {\ttfamily \#include $<$netdb.\+h$>$}\\*
+{\ttfamily \#include $<$fcntl.\+h$>$}\\*
 Include dependency graph for tp1\+\_\+cliente\+\_\+baash.\+c\+:
 % FIG 0
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
-\#define \hyperlink{tp1__cliente__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}{T\+AM}~2048
+\#define \hyperlink{tp1__cliente__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}{T\+AM}~1024
 \begin{DoxyCompactList}\small\item\em Tamaño de los buffer para sockets. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -29,7 +30,7 @@ int \hyperlink{tp1__cliente__baash_8c_a0ddf1224851353fc92bfbff6f499fa97}{main} (
 \subsection{Macro Definition Documentation}
 \index{tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash.\+c}!T\+AM@{T\+AM}}
 \index{T\+AM@{T\+AM}!tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash.\+c}}
-\subsubsection[{\texorpdfstring{T\+AM}{TAM}}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\+AM~2048}\hypertarget{tp1__cliente__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}{}\label{tp1__cliente__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}
+\subsubsection[{\texorpdfstring{T\+AM}{TAM}}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\+AM~1024}\hypertarget{tp1__cliente__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}{}\label{tp1__cliente__baash_8c_ae0b4816fb45161ef9da5e6d6134ee28a}
 
 
 Tamaño de los buffer para sockets. 
@@ -97,6 +98,8 @@ se imprime promt()
 Se abre un archivo con el nombre del archivo que se solicito descargar del servidor donde se iran almacenando los dato recibidos.
 \end{DoxyParagraph}
 Se copia el contenido del archivo recibido en un archivo
+
+Se envia mensaje U\+DP al servidor para comenzar la trasferencia
 
 Recibe respuesta del Server de que el archivo se transfirió correctamente \index{tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash.\+c}!parsear\+\_\+entrada@{parsear\+\_\+entrada}}
 \index{parsear\+\_\+entrada@{parsear\+\_\+entrada}!tp1\+\_\+cliente\+\_\+baash.\+c@{tp1\+\_\+cliente\+\_\+baash.\+c}}

@@ -216,7 +216,6 @@ int baash(int newsockfd,socklen_t clilen) {
 
 				}
 				else{ // ejecucion normal
-					// printf("Pase por ejecucion normal \n");
 					if(strlen(entrada)!=1){
 						buscar_path_ejecutar(fichero,argumentos);
 					}

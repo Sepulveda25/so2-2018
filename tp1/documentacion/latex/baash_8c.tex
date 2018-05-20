@@ -1,5 +1,5 @@
-\hypertarget{baash_8c}{}\section{tp1/tp1\+\_\+servidor\+\_\+baash/baash.c File Reference}
-\label{baash_8c}\index{tp1/tp1\+\_\+servidor\+\_\+baash/baash.\+c@{tp1/tp1\+\_\+servidor\+\_\+baash/baash.\+c}}
+\hypertarget{baash_8c}{}\section{tp1\+\_\+servidor\+\_\+baash/baash.c File Reference}
+\label{baash_8c}\index{tp1\+\_\+servidor\+\_\+baash/baash.\+c@{tp1\+\_\+servidor\+\_\+baash/baash.\+c}}
 {\ttfamily \#include $<$stdio.\+h$>$}\\*
 {\ttfamily \#include \char`\"{}parsear\+\_\+entrada.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}buscar\+\_\+en\+\_\+\+P\+A\+T\+H.\+h\char`\"{}}\\*
@@ -78,12 +78,22 @@ Se desvia el S\+T\+D\+O\+UT por el puerto T\+CP
 
 Se desvia el S\+T\+D\+IN por el puerto T\+CP
 
+Deteccion de enter solo
+
+Respuesta obligatoria al cliente
+
+Retardo para volver a recibir un comando
+
+Retardo para volver a recibir un comando
+
 \begin{DoxyParagraph}{Comando \char`\"{}descargar\char`\"{}.}
 Esta parte lee el archivo que se solicito. Se recorre por lineas y se comienza enviar los datos al cliente utilizando el socket U\+DP. Cuando se llega al final del archivo se envia la cadena \char`\"{}fin\+De\+Lectura\char`\"{} al cliente, que este interpreta que no hay mas datos para recibir. Una vez finalizado el envio el achivo se cierra.
 \end{DoxyParagraph}
 Se realiza la configuracion para envio por protocolo U\+DP
 
 Se comienza a leer el archivo y enviar los datos leidos
+
+Retardo para enviar los datos por U\+DP
 
 Se avisa al destino que no hay mas datos por enviar \index{baash.\+c@{baash.\+c}!buscar\+\_\+path\+\_\+ejecutar@{buscar\+\_\+path\+\_\+ejecutar}}
 \index{buscar\+\_\+path\+\_\+ejecutar@{buscar\+\_\+path\+\_\+ejecutar}!baash.\+c@{baash.\+c}}
@@ -97,7 +107,7 @@ Se avisa al destino que no hay mas datos por enviar \index{baash.\+c@{baash.\+c}
 
 Se identifica que tipo de path es (absoluto, relativo, etc) 
 
-\index{baash.\+c@{baash.\+c}!obtener\+\_\+entrada@{obtener\+\_\+entrada}}
+Retardo para volver a recibir un comando \index{baash.\+c@{baash.\+c}!obtener\+\_\+entrada@{obtener\+\_\+entrada}}
 \index{obtener\+\_\+entrada@{obtener\+\_\+entrada}!baash.\+c@{baash.\+c}}
 \subsubsection[{\texorpdfstring{obtener\+\_\+entrada(char $\ast$entrada, char $\ast$argumentos[], char $\ast$fichero)}{obtener_entrada(char *entrada, char *argumentos[], char *fichero)}}]{\setlength{\rightskip}{0pt plus 5cm}void obtener\+\_\+entrada (
 \begin{DoxyParamCaption}
