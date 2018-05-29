@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  ubuntu: 
+    build: .
+    image: ubuntu:latest
+    privileged: true
+    tty: true #mantiene corriendo al container
+    container_name: servidor_apache
+    ports: #mapeo de puertos "host:contenedor"
+      #apache2
+     - 8080:80
+    volumes: # mapeo de directorios "host:contenedor"
+      - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf:ro
+      - ./apache_config/000-default.conf:/etc/apache2/sites-available/000-default.conf:ro #apache config
+      - ./apache_inicio.sh:/script/apache_inicio.sh:ro # script para reiniciar apache
+      - ./www/html/index.html:/var/www/html/index.html:ro #pagina principal
+      - ./www/html/cgi-bin/tareaA.cgi:/var/www/html/cgi-bin/tareaA.cgi:ro
+      - ./www/html/cgi-bin/systeminfo.c:/var/www/html/cgi-bin/systeminfo.c:ro
+    
+ 
+    
