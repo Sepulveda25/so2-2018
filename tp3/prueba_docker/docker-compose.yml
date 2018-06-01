@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  ubuntu: 
+    build: .
+    image: ubuntu:latest
+    privileged: true
+    tty: true #mantiene corriendo al container
+    container_name: servidor_apache
+    ports: #mapeo de puertos "host:contenedor"
+      #apache2
+     - 8080:80
+    volumes: # mapeo de directorios "host:contenedor"
+      - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf:ro
+      - ./apache_config/000-default.conf:/etc/apache2/sites-available/000-default.conf:ro #apache config
+      - ./apache_inicio.sh:/script/apache_inicio.sh:ro # script para reiniciar apache
+      - ./www/html/index.html:/var/www/html/index.html:ro #pagina principal
+      - ./www/html/cgi-bin/info_sistema.cgi:/var/www/html/cgi-bin/info_sistema.cgi:ro # script perl para mostrar recursos del sistema
+      - ./www/html/cgi-bin/recursos_sistema.c:/var/www/html/cgi-bin/recursos_sistema.c:ro # programa en c que muestra los recursos del sistema
+      - ./www/html/cgi-bin/aplicacion_baash.cgi:/var/www/html/cgi-bin/aplicacion_baash.cgi:ro # script perl para mostrar recursos del sistema
+      - ./www/html/cgi-bin/baash.c:/var/www/html/cgi-bin/baash.c:ro # programa en c aplicacion baash
+      - ./compilacion.sh:/script/compilacion.sh:ro # script de compilacion para pasar de c a cgi
+
+    
+ 
+    
