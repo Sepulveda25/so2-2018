@@ -6,6 +6,8 @@
 #include <string.h>
 #include <sys/types.h>
 #include <fcntl.h>
+#include <sys/stat.h>
+#include <errno.h>
 /// Tamaño de los buffer para sockets 
 #define BUFFSIZE 256 
 #define READ 0
@@ -30,44 +32,99 @@ int main(void) {
     char* argumentosSalida [BUFFSIZE+1];
     char posicion[BUFFSIZE+1];
     char hostname[BUFFSIZE+1];
+    char nombre[BUFFSIZE+1];
+    int fd;
     struct cli_addr;
 	pid_t child_pid;
 	int status;
-	int fd;
 	int pipe_fds[2];
+	char *data;
+	char *token;
+
+	int fd2 = open("salida_pantalla.txt", O_RDWR |O_TRUNC| O_CREAT, 0777);
+	if(fd2 < 0){
+        // printf("Error opening the file\n");
+        printf("Error %d \n", errno);
+        return 0;
+	}
 
 
-	while(1){
+
+	// printf("%s%c%c\n", "Content-Type:text/html;charset=iso-8859-1",13,10);
+	printf( "Content-Type: text/plain\n\n" );
+	// printf("<TITLE>Aplicacion baash</TITLE>\n");
+	// for(int j=0;j<6000000;j++){} /// Retardo para volver a recibir un comando
+	memset(entrada, '\0', BUFFSIZE );
+	strcpy(entrada," ");
+	data = getenv("QUERY_STRING");
+	printf("1_Se recibe:  %s\n",data );
+
+	
+	if(data == NULL) {
+	  	printf("Error! Error in passing data from form to script.");
+	  	return 0;
+	}
+	else{
+		token=strtok (data,"=");
+		printf("2_Se recibe:  %s\n",token );
+
+		token=strtok( NULL, "=");
+		printf("3_Se recibe:  %s\n",token );
+		strcpy(entrada,token);
+		printf("Entrada:  %s\n",entrada );
+		for (int k=0; k<strlen(entrada);k++) if (entrada[k]=='+')entrada[k]=' '; // Se quitan los "+"	
+		memset(posicion, '\0', BUFFSIZE );
+		//direccion actual de pwd
+		getcwd(posicion,sizeof(posicion));
+		//Se obtiene el nombre de Host
+		gethostname(hostname, BUFFSIZE+1);
+		//Se obtiene el nombre de usuario
+		getlogin_r(nombre,sizeof(nombre));
+		printf("%s@%s:%s$ %s \n",nombre,hostname, posicion,entrada);
+
+		if (((strlen(entrada)==1))||(entrada[0]==32)){ /// Deteccion de enter solo
+				// printf("\n"); /// Respuesta obligatoria al cliente 
+			printf("No existe comando \n");
+			return 0;
+		}
+	}
+	
+
+
+	// while(1){
 		int operacion=0;
 		// int comando;
 		int i=0;
 	
-		memset(entrada, '\0', BUFFSIZE );
-		strcpy(entrada," ");
+		// memset(entrada, '\0', BUFFSIZE );
+		// strcpy(entrada," ");
 		
-		while ((strlen(entrada)==1)){//// control ingreso de enter solo
-			memset(posicion, '\0', BUFFSIZE );
-			//direccion actual de pwd
-			getcwd(posicion,sizeof(posicion));
-			//Se obtiene el nombre de Host
-			gethostname(hostname, BUFFSIZE+1);
-			printf("@%s:%s$  ",hostname, posicion);
+		// while ((strlen(entrada)==1)){//// control ingreso de enter solo
+		// 	memset(posicion, '\0', BUFFSIZE );
+		// 	//direccion actual de pwd
+		// 	getcwd(posicion,sizeof(posicion));
+		// 	//Se obtiene el nombre de Host
+		// 	gethostname(hostname, BUFFSIZE+1);
+		// 	getlogin_r(nombre,sizeof(nombre));
+		// 	printf("%s@%s:%s$  ",nombre,hostname, posicion);
 			
-			fflush(0);
+		// 	fflush(0);
 		
-			fgets(entrada,sizeof(entrada),stdin);
+		// 	fgets(entrada,sizeof(entrada),stdin);
 			
-			if (((strlen(entrada)==1))||(entrada[0]==32)){ /// Deteccion de enter solo
-				// printf("\n"); /// Respuesta obligatoria al cliente 
-				memset(entrada, '\0', BUFFSIZE );
-				strcpy(entrada," ");
-			}
-			// printf("Y entrada es:%d FIN",strlen(entrada));
+		// 	if (((strlen(entrada)==1))||(entrada[0]==32)){ /// Deteccion de enter solo
+		// 		// printf("\n"); /// Respuesta obligatoria al cliente 
+		// 		memset(entrada, '\0', BUFFSIZE );
+		// 		strcpy(entrada," ");
+		// 	}
+		// 	// printf("Y entrada es:%d FIN",strlen(entrada));
+		// }
 
-		}	
-        entrada[strlen(entrada)-1]='\0';
+		
 
-		i=parsear_entrada(entrada,argumentos," ");
+        // entrada[strlen(entrada)-1]='\0';
+
+		i=parsear_entrada(entrada,argumentos," +");
 		strcpy(fichero,entrada);// fichero
 
 		// comando=strcmp(argumentos[0],"exit");
@@ -86,6 +143,8 @@ int main(void) {
 		}
 
 		if ( child_pid == 0 ) {  // Proceso hijo
+			/// Se desvia el STDOUT 
+			dup2(fd2, WRITE);
 			if(strcmp(argumentos[0],"cd")==0){ // se fija si es el comando cd
 				if(chdir(argumentos[1])==-1){
 					printf("No existe el fichero ó directorio \n");
@@ -143,11 +202,14 @@ int main(void) {
 					if(strlen(entrada)!=1){
 						buscar_path_ejecutar(fichero,argumentos);
 					}
-					else{
-						exit(0);
-					}
+					// else{
+					// 	exit(0);
+					// }
 				}
 			}
+			close(fd2);//se cierra el archivo
+			// exit(0);
+
 		}
 		else{//Proceso padre
 			if(operacion!=1){
@@ -156,7 +218,9 @@ int main(void) {
 				}
 			}
 		}
-	}
+	// } //while
+	
+	printf("Saliendo\n");
 	return 0;
 } 
 
@@ -226,7 +290,9 @@ void buscar_path_ejecutar(char *camino,char *argumentos[]){
 		// printf("\nprefix es :%d", strlen(prefix));
 		if(strcmp(prefix,"-1")==0)
 		{
-			printf("No existe el comando\n");
+			char *const parmList[] = {"/bin/echo", "No existe el comando...", NULL};
+			// printf("No existe el comando...\n");
+			execv ("/bin/echo", parmList);
 		}
 		else
 		{

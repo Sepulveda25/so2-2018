@@ -10,9 +10,14 @@ print <<htmlcode;
 <body>
 	<h1><center>Aplicacion Baash</center> </h1>
 	<hr>
+	<form action="/cgi-bin/baash.cgi" target="my_iframe">
+		Comando: <input type="text" name="comando"><br>
+		<input type="submit" value="Enter">
+	</form>
+	<hr>
 	<div align="center">
 		<iframe
-			src ="/cgi-bin/baash.cgi"
+			name="my_iframe"
 			width="80%"
 			height="420">	
 		</iframe>
