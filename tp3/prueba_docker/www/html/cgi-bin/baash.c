@@ -40,39 +40,70 @@ int main(void) {
 	int pipe_fds[2];
 	char *data;
 	char *token;
-
+	int k=0,l=0;
 	int fd2 = open("salida_pantalla.txt", O_RDWR |O_TRUNC| O_CREAT, 0777);
 	if(fd2 < 0){
-        // printf("Error opening the file\n");
         printf("Error %d \n", errno);
         return 0;
 	}
 
-
-
 	// printf("%s%c%c\n", "Content-Type:text/html;charset=iso-8859-1",13,10);
 	printf( "Content-Type: text/plain\n\n" );
-	// printf("<TITLE>Aplicacion baash</TITLE>\n");
-	// for(int j=0;j<6000000;j++){} /// Retardo para volver a recibir un comando
 	memset(entrada, '\0', BUFFSIZE );
 	strcpy(entrada," ");
-	data = getenv("QUERY_STRING");
+	data = getenv("QUERY_STRING"); // se obtiene el dato de el cuadro de texto 
 	printf("1_Se recibe:  %s\n",data );
 
-	
 	if(data == NULL) {
 	  	printf("Error! Error in passing data from form to script.");
 	  	return 0;
 	}
 	else{
-		token=strtok (data,"=");
+		token=strtok (data,"="); // se quita "comando="
 		printf("2_Se recibe:  %s\n",token );
-
-		token=strtok( NULL, "=");
+		token=strtok( NULL, "=");// se queda lo que hay despue
 		printf("3_Se recibe:  %s\n",token );
-		strcpy(entrada,token);
+
+		//  /<>|=%2F%3C%3E%7C
+		for (k=0; k<strlen(token);k++){
+			
+			if (*(token+k)=='%'){
+				if((*(token+k+1)=='2')&&(*(token+k+2)=='F')){ // se detecta "/"
+					printf("hay /\n");
+					entrada[l]='/';
+
+					k=k+2;// avanza al proximo caracter
+				}
+				else if((*(token+k+1)=='3')&&(*(token+k+2)=='C')){ // se detecta "<"
+					printf("hay <\n");
+					entrada[l]='<';
+					k=k+2;// avanza al proximo caracter
+				}
+				else if((*(token+k+1)=='3')&&(*(token+k+2)=='E')){ // se detecta ">"
+					printf("hay >\n");
+					entrada[l]='>';
+					k=k+2;// avanza al proximo caracter
+
+				}else if((*(token+k+1)=='3')&&(*(token+k+2)=='7')){ // se detecta "|"
+					printf("hay |\n");
+					entrada[l]='|';
+					k=k+2;// avanza al proximo caracter
+				}
+			}else{
+				entrada[l]=(*(token+k));
+				// printf("token --->%c\n", (*(token+k)));
+				// printf("entrada--->%c\n", entrada[l]);
+			}
+			l++;
+		}
+		entrada[l+1]='\0';	
+
+
+		//strcpy(entrada,token); // se copia la entrada de datos ya parseada
 		printf("Entrada:  %s\n",entrada );
-		for (int k=0; k<strlen(entrada);k++) if (entrada[k]=='+')entrada[k]=' '; // Se quitan los "+"	
+		printf("Entrada len:  %d\n",strlen(entrada) );
+
+		for (k=0; k<strlen(entrada);k++) if (entrada[k]=='+')entrada[k]=' '; // Se reemplazan los "+" por espacios	
 		memset(posicion, '\0', BUFFSIZE );
 		//direccion actual de pwd
 		getcwd(posicion,sizeof(posicion));
@@ -89,138 +120,109 @@ int main(void) {
 		}
 	}
 	
-
-
-	// while(1){
-		int operacion=0;
-		// int comando;
-		int i=0;
 	
-		// memset(entrada, '\0', BUFFSIZE );
-		// strcpy(entrada," ");
-		
-		// while ((strlen(entrada)==1)){//// control ingreso de enter solo
-		// 	memset(posicion, '\0', BUFFSIZE );
-		// 	//direccion actual de pwd
-		// 	getcwd(posicion,sizeof(posicion));
-		// 	//Se obtiene el nombre de Host
-		// 	gethostname(hostname, BUFFSIZE+1);
-		// 	getlogin_r(nombre,sizeof(nombre));
-		// 	printf("%s@%s:%s$  ",nombre,hostname, posicion);
-			
-		// 	fflush(0);
-		
-		// 	fgets(entrada,sizeof(entrada),stdin);
-			
-		// 	if (((strlen(entrada)==1))||(entrada[0]==32)){ /// Deteccion de enter solo
-		// 		// printf("\n"); /// Respuesta obligatoria al cliente 
-		// 		memset(entrada, '\0', BUFFSIZE );
-		// 		strcpy(entrada," ");
-		// 	}
-		// 	// printf("Y entrada es:%d FIN",strlen(entrada));
-		// }
+	int operacion=0;
+	int i=0;
+	i=parsear_entrada(entrada,argumentos," +");
+	strcpy(fichero,entrada);// fichero
 
-		
-
-        // entrada[strlen(entrada)-1]='\0';
-
-		i=parsear_entrada(entrada,argumentos," +");
-		strcpy(fichero,entrada);// fichero
-
-		// comando=strcmp(argumentos[0],"exit");
-		// if ((feof(stdin))||(comando==0))
-		// {
-		// 	printf("\nSaliendo...\n");
-		// 	exit(0);
-		// }
-		operacion=operadores(argumentos);
-		
-		
-		child_pid = vfork(); 
-		if ( child_pid < 0 ) {
-			perror( "fork" );
-			exit( 1 );
-		}
-
-		if ( child_pid == 0 ) {  // Proceso hijo
-			/// Se desvia el STDOUT 
-			dup2(fd2, WRITE);
-			if(strcmp(argumentos[0],"cd")==0){ // se fija si es el comando cd
-				if(chdir(argumentos[1])==-1){
-					printf("No existe el fichero ó directorio \n");
-				}
-			}
-			
-			else{
-				if(operacion==2){ // redireccionar la entrada
-					// printf("*** Redireccionar la entrada ***");
-					close (0); //0 	Standard Input (stdin) 
-					fd = open (argumentos[i-1], O_RDONLY);
-					if (fd == -1) {
-	  					printf("No se pudo abrir el archivo\n");
-	  					exit (1);
-					}
-					argumentos[i-1]='\0'; // se elimina dir ej /home/
-					argumentos[i-2]='\0'; // se elimina <
-					buscar_path_ejecutar(fichero,argumentos);
-					close (fd);
-				} 
-				else if(operacion==3){ // redireccionar la salida
-					// printf("\n*** Redireccionar la salida ***");
-					close (1); //1 	Standard Output (stdout) 
-					fd = open (argumentos[i-1], O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
-					if (fd == -1) {
-	  					printf("No se pudo abrir el archivo\n");
-	  					exit (1);
-					}
-					argumentos[i-1]='\0'; // se elimina dir ej /home/
-					argumentos[i-2]='\0'; // se elimina >
-					buscar_path_ejecutar(fichero,argumentos);
-					close (fd);
-				}else if(operacion==4){ // pipe
-					// printf("\n*** Pipe ***");
-					if (pipe (pipe_fds)){
-      				 	fprintf (stderr, "Pipe failed.\n");
-       					return EXIT_FAILURE;
-     				}
-     				pipe_argumentos(argumentosEntrada,argumentosSalida,argumentos);
-					if(fork()==0) {
-	   					close(pipe_fds[READ]);
-	   					dup2(pipe_fds[WRITE],1);
-						buscar_path_ejecutar(argumentosEntrada[0],argumentosEntrada); //ejecutar lo de la izq de |
-	   					close(pipe_fds[WRITE]);
-	 				}else{;
-	   					close(pipe_fds[WRITE]);
-	   					dup2(pipe_fds[READ],0);
-						buscar_path_ejecutar(argumentosSalida[0],argumentosSalida); //ejecutar lo de la der de |
-	   					close(pipe_fds[WRITE]);
-	   					close(pipe_fds[READ]);
-	 				}
-
-				}
-				else{ // ejecucion normal
-					if(strlen(entrada)!=1){
-						buscar_path_ejecutar(fichero,argumentos);
-					}
-					// else{
-					// 	exit(0);
-					// }
-				}
-			}
-			close(fd2);//se cierra el archivo
-			// exit(0);
-
-		}
-		else{//Proceso padre
-			if(operacion!=1){
-				if (waitpid (child_pid, &status, 0) != child_pid){
-		      		status = -1;
-				}
-			}
-		}
-	// } //while
+	operacion=operadores(argumentos);
 	
-	printf("Saliendo\n");
+	
+	child_pid = vfork(); 
+	if ( child_pid < 0 ) {
+		perror( "fork" );
+		exit( 1 );
+	}
+
+	if ( child_pid == 0 ) {  // Proceso hijo
+		/// Se desvia el STDOUT al archivo salida_pantalla.txt
+		dup2(fd2, WRITE);
+		if(strcmp(argumentos[0],"cd")==0){ // se fija si es el comando cd
+			if(chdir(argumentos[1])==-1){
+				printf("No existe el fichero ó directorio \n");
+			}
+			char *const parmList[] = {"/bin/echo", NULL};
+			execv ("/bin/echo", parmList);
+		}
+		
+		else{
+			if(operacion==2){ // redireccionar la entrada
+				// printf("*** Redireccionar la entrada ***");
+				close (0); //0 	Standard Input (stdin) 
+				fd = open (argumentos[i-1], O_RDONLY);
+				if (fd == -1) {
+  					printf("No se pudo abrir el archivo\n");
+  					exit (1);
+				}
+				argumentos[i-1]='\0'; // se elimina dir ej /home/
+				argumentos[i-2]='\0'; // se elimina <
+				buscar_path_ejecutar(fichero,argumentos);
+				close (fd);
+			} 
+			else if(operacion==3){ // redireccionar la salida
+				// printf("\n*** Redireccionar la salida ***");
+				close (1); //1 	Standard Output (stdout) 
+				fd = open (argumentos[i-1], O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+				if (fd == -1) {
+  					printf("No se pudo abrir el archivo\n");
+  					exit (1);
+				}
+				argumentos[i-1]='\0'; // se elimina dir ej /home/
+				argumentos[i-2]='\0'; // se elimina >
+				buscar_path_ejecutar(fichero,argumentos);
+				close (fd);
+			}else if(operacion==4){ // pipe
+				// printf("\n*** Pipe ***");
+				if (pipe (pipe_fds)){
+  				 	fprintf (stderr, "Pipe failed.\n");
+   					return EXIT_FAILURE;
+ 				}
+ 				pipe_argumentos(argumentosEntrada,argumentosSalida,argumentos);
+				if(fork()==0) {
+   					close(pipe_fds[READ]);
+   					dup2(pipe_fds[WRITE],1);
+					buscar_path_ejecutar(argumentosEntrada[0],argumentosEntrada); //ejecutar lo de la izq de |
+   					close(pipe_fds[WRITE]);
+ 				}else{;
+   					close(pipe_fds[WRITE]);
+   					dup2(pipe_fds[READ],0);
+					buscar_path_ejecutar(argumentosSalida[0],argumentosSalida); //ejecutar lo de la der de |
+   					close(pipe_fds[WRITE]);
+   					close(pipe_fds[READ]);
+ 				}
+
+			}
+			else{ // ejecucion normal
+				if(strlen(entrada)!=1){
+					buscar_path_ejecutar(fichero,argumentos);
+				}
+			}
+		}
+
+	}
+	else{//Proceso padre
+		if(operacion!=1){
+			if (waitpid (child_pid, &status, 0) != child_pid){
+	      		status = -1;
+			}
+		}
+	}
+
+	close(fd2);//se cierra el archivo
+	FILE *salida_baash; 						
+	char buffer_archivo[BUFFSIZE];
+	salida_baash = fopen("salida_pantalla.txt","r");
+
+	/// Se comienza a leer el archivo datos_estacion.CSV y enviar los datos leidos
+	fgets(buffer_archivo, BUFFSIZE, salida_baash);
+	// printf("%s\n", buffer_archivo);
+	while (!feof (salida_baash)){
+		printf("%s\n", buffer_archivo);
+		fgets(buffer_archivo, BUFFSIZE, salida_baash);		
+
+	} 
+	fclose(salida_baash);//se cierra el archiv0
 	return 0;
 } 
 
@@ -291,7 +293,6 @@ void buscar_path_ejecutar(char *camino,char *argumentos[]){
 		if(strcmp(prefix,"-1")==0)
 		{
 			char *const parmList[] = {"/bin/echo", "No existe el comando...", NULL};
-			// printf("No existe el comando...\n");
 			execv ("/bin/echo", parmList);
 		}
 		else

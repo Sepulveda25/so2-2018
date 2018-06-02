@@ -11,7 +11,7 @@ print <<htmlcode;
 	<h1><center>Aplicacion Baash</center> </h1>
 	<hr>
 	<form action="/cgi-bin/baash.cgi" target="my_iframe">
-		Comando: <input type="text" name="comando"><br>
+		Comando: <input type="text/plain" name="comando"><br>
 		<input type="submit" value="Enter">
 	</form>
 	<hr>
