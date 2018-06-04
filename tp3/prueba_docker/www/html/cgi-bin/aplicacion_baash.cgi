@@ -4,8 +4,8 @@ print "Content-type: text/html\n\n";
 my $archivo = "path.txt"; # al ingrsar se borra el contenido de path.txt
 open(FILE, "> $archivo"); #abrir el archivo para escritura
 flock(FILE, 2) if $usar_flock; #usar flock() si disponible
-print FILE "$\ "; #escribir nueva entrada
-close(FILE); #cerrar archivogi);
+print FILE ""; #escribir el caracter null esto borra en contenido del archivo
+close(FILE); #cerrar archivog
 print <<htmlcode;
 <html>
 <head>
