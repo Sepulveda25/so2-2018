@@ -115,7 +115,7 @@ int main(void) {
 		//strcpy(entrada,token); // se copia la entrada de datos ya parseada
 		// printf("Entrada:  %s\n",entrada );
 		// printf("Entrada len:  %d\n",strlen(entrada));
-		printf("buffer_path len:  %d\n",strlen(buffer_path) );
+		// printf("buffer_path len:  %d\n",strlen(buffer_path) );
 
 		for (k=0; k<strlen(entrada);k++) if (entrada[k]=='+')entrada[k]=' '; // Se reemplazan los "+" por espacios	
 		memset(posicion, '\0', BUFFSIZE );

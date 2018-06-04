@@ -20,7 +20,7 @@ services:
       #- ./www/html/cgi-bin/recursos_sistema.c:/var/www/html/cgi-bin/recursos_sistema.c:ro # programa en c que muestra los recursos del sistema
       #- ./www/html/cgi-bin/aplicacion_baash.cgi:/var/www/html/cgi-bin/aplicacion_baash.cgi:ro # script perl para mostrar recursos del sistema
       #- ./www/html/cgi-bin/baash.c:/var/www/html/cgi-bin/baash.c:ro # programa en c aplicacion baash
-      - ./compilacion.sh:/script/compilacion.sh:ro # script de compilacion para pasar de c a cgi
+      - ./compilacion.sh:/script/compilacion.sh:rw # script de compilacion para pasar de c a cgi
 
     
  
