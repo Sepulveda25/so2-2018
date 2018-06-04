@@ -1,1 +1,8 @@
-
+aplicacion_baash.cgi
+baash.c
+baash.cgi
+info_sistema.cgi
+path.txt
+recursos_sistema.c
+recursos_sistema.cgi
+salida_pantalla.txt

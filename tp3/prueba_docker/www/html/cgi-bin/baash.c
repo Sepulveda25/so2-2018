@@ -43,7 +43,7 @@ int main(void) {
 	int k=0,l=0;
 	int fd2 = open("salida_pantalla.txt", O_RDWR |O_TRUNC| O_CREAT, 0777);
 	if(fd2 < 0){
-        printf("Error %d \n", errno);
+        printf("Error al abrir salida_pantalla.txt %d \n", errno);
         return 0;
 	}
 
@@ -64,8 +64,7 @@ int main(void) {
 		token=strtok( NULL, "=");// se queda lo que hay despue
 		printf("3_Se recibe:  %s\n",token );
 
-		//  /<>|=%2F%3C%3E%7C
-		for (k=0; k<strlen(token);k++){
+		for (k=0; k<strlen(token);k++){ /// Sa parcea la entrada buscando %2F%3C%3E%7C /<>|
 			
 			if (*(token+k)=='%'){
 				if((*(token+k+1)=='2')&&(*(token+k+2)=='F')){ // se detecta "/"
@@ -98,10 +97,34 @@ int main(void) {
 		}
 		entrada[l+1]='\0';	
 
+		///Se lee el path guardado anteriormente
+		//************************************************************************************
+		FILE *path_anterior; 						
+		char buffer_path[BUFFSIZE];
+		memset(buffer_path, '\0', BUFFSIZE );
+		path_anterior = fopen("path.txt","r");
 
+		/// Se comienza a leer el archivo path.txt 
+		fgets(buffer_path, BUFFSIZE, path_anterior);
+		printf("path: %s\n", buffer_path);
+
+		// if(chdir(buffer_path)==-1){
+		// 	printf("No existe el fichero ó directorio \n");
+		// }
+		if(access(buffer_path,F_OK)!=-1)
+		{
+			printf("existe path\n");
+		}else{
+			printf("no existe path\n");
+		}
+
+		buffer_path[strlen(buffer_path)-1]='\0';	
+		fclose(path_anterior);//se cierra el archivo
+		///******************************************************************************
 		//strcpy(entrada,token); // se copia la entrada de datos ya parseada
 		printf("Entrada:  %s\n",entrada );
-		printf("Entrada len:  %d\n",strlen(entrada) );
+		printf("Entrada len:  %d\n",strlen(entrada));
+		printf("buffer_path len:  %d\n",strlen(buffer_path) );
 
 		for (k=0; k<strlen(entrada);k++) if (entrada[k]=='+')entrada[k]=' '; // Se reemplazan los "+" por espacios	
 		memset(posicion, '\0', BUFFSIZE );
@@ -111,7 +134,13 @@ int main(void) {
 		gethostname(hostname, BUFFSIZE+1);
 		//Se obtiene el nombre de usuario
 		getlogin_r(nombre,sizeof(nombre));
-		printf("%s@%s:%s$ %s \n",nombre,hostname, posicion,entrada);
+		
+		if(strlen(buffer_path)==0){
+			printf("%s@%s:%s$ %s \n",nombre,hostname, posicion,entrada);
+		}else{
+			printf("%s@%s:%s$ %s \n",nombre,hostname, buffer_path,entrada);
+		}
+		
 
 		if (((strlen(entrada)==1))||(entrada[0]==32)){ /// Deteccion de enter solo
 				// printf("\n"); /// Respuesta obligatoria al cliente 
@@ -128,7 +157,12 @@ int main(void) {
 
 	operacion=operadores(argumentos);
 	
-	
+	int path_nuevo = open("path.txt", O_RDWR |O_TRUNC, 0777);
+	if(path_nuevo < 0){
+        printf("Error al abrir path.txt cod. %d \n", errno);
+        // return 0;
+	}
+
 	child_pid = vfork(); 
 	if ( child_pid < 0 ) {
 		perror( "fork" );
@@ -142,6 +176,15 @@ int main(void) {
 			if(chdir(argumentos[1])==-1){
 				printf("No existe el fichero ó directorio \n");
 			}
+
+			//************************
+
+			write(path_nuevo, argumentos[1],strlen(argumentos[1]));
+
+			printf("path: %s\n", argumentos[1]);
+		
+			//************************
+
 			char *const parmList[] = {"/bin/echo", NULL};
 			execv ("/bin/echo", parmList);
 		}
@@ -208,13 +251,14 @@ int main(void) {
 			}
 		}
 	}
-
+	// write(path_nuevo, argumentos[1],strlen(argumentos[1]));
+	close(path_nuevo);//se cierra el archivo
 	close(fd2);//se cierra el archivo
 	FILE *salida_baash; 						
 	char buffer_archivo[BUFFSIZE];
 	salida_baash = fopen("salida_pantalla.txt","r");
 
-	/// Se comienza a leer el archivo datos_estacion.CSV y enviar los datos leidos
+	/// Se comienza a leer el archivo salida_pantalla.txt e imprimir el contenido
 	fgets(buffer_archivo, BUFFSIZE, salida_baash);
 	// printf("%s\n", buffer_archivo);
 	while (!feof (salida_baash)){
@@ -222,7 +266,7 @@ int main(void) {
 		fgets(buffer_archivo, BUFFSIZE, salida_baash);		
 
 	} 
-	fclose(salida_baash);//se cierra el archiv0
+	fclose(salida_baash);//se cierra el archivo
 	return 0;
 } 
 
