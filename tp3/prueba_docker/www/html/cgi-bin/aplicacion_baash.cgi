@@ -1,11 +1,16 @@
 #!/usr/bin/perl
 
 print "Content-type: text/html\n\n";
+my $archivo = "path.txt"; # al ingrsar se borra el contenido de path.txt
+open(FILE, "> $archivo"); #abrir el archivo para escritura
+flock(FILE, 2) if $usar_flock; #usar flock() si disponible
+print FILE "$\ "; #escribir nueva entrada
+close(FILE); #cerrar archivogi);
 print <<htmlcode;
 <html>
 <head>
 <title>Baash</title>
-<a href="/">Index</a>
+<a href="/">Pagina principal</a>
 </head>
 <body>
 	<h1><center>Aplicacion Baash</center> </h1>

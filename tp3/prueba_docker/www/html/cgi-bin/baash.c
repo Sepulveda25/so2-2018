@@ -41,6 +41,7 @@ int main(void) {
 	char *data;
 	char *token;
 	int k=0,l=0;
+	char buffer_path[BUFFSIZE];
 	int fd2 = open("salida_pantalla.txt", O_RDWR |O_TRUNC| O_CREAT, 0777);
 	if(fd2 < 0){
         printf("Error al abrir salida_pantalla.txt %d \n", errno);
@@ -52,7 +53,7 @@ int main(void) {
 	memset(entrada, '\0', BUFFSIZE );
 	strcpy(entrada," ");
 	data = getenv("QUERY_STRING"); // se obtiene el dato de el cuadro de texto 
-	printf("1_Se recibe:  %s\n",data );
+	// printf("1_Se recibe:  %s\n",data );
 
 	if(data == NULL) {
 	  	printf("Error! Error in passing data from form to script.");
@@ -60,31 +61,31 @@ int main(void) {
 	}
 	else{
 		token=strtok (data,"="); // se quita "comando="
-		printf("2_Se recibe:  %s\n",token );
+		// printf("2_Se recibe:  %s\n",token );
 		token=strtok( NULL, "=");// se queda lo que hay despue
-		printf("3_Se recibe:  %s\n",token );
+		// printf("3_Se recibe:  %s\n",token );
 
 		for (k=0; k<strlen(token);k++){ /// Sa parcea la entrada buscando %2F%3C%3E%7C /<>|
 			
 			if (*(token+k)=='%'){
 				if((*(token+k+1)=='2')&&(*(token+k+2)=='F')){ // se detecta "/"
-					printf("hay /\n");
+					// printf("hay /\n");
 					entrada[l]='/';
 
 					k=k+2;// avanza al proximo caracter
 				}
 				else if((*(token+k+1)=='3')&&(*(token+k+2)=='C')){ // se detecta "<"
-					printf("hay <\n");
+					// printf("hay <\n");
 					entrada[l]='<';
 					k=k+2;// avanza al proximo caracter
 				}
 				else if((*(token+k+1)=='3')&&(*(token+k+2)=='E')){ // se detecta ">"
-					printf("hay >\n");
+					// printf("hay >\n");
 					entrada[l]='>';
 					k=k+2;// avanza al proximo caracter
 
 				}else if((*(token+k+1)=='3')&&(*(token+k+2)=='7')){ // se detecta "|"
-					printf("hay |\n");
+					// printf("hay |\n");
 					entrada[l]='|';
 					k=k+2;// avanza al proximo caracter
 				}
@@ -100,31 +101,21 @@ int main(void) {
 		///Se lee el path guardado anteriormente
 		//************************************************************************************
 		FILE *path_anterior; 						
-		char buffer_path[BUFFSIZE];
+		
 		memset(buffer_path, '\0', BUFFSIZE );
 		path_anterior = fopen("path.txt","r");
 
-		/// Se comienza a leer el archivo path.txt 
+		/// Se lee el archivo path.txt 
 		fgets(buffer_path, BUFFSIZE, path_anterior);
-		printf("path: %s\n", buffer_path);
+		// printf("path: %s\n", buffer_path);
 
-		// if(chdir(buffer_path)==-1){
-		// 	printf("No existe el fichero ó directorio \n");
-		// }
-		if(access(buffer_path,F_OK)!=-1)
-		{
-			printf("existe path\n");
-		}else{
-			printf("no existe path\n");
-		}
-
-		buffer_path[strlen(buffer_path)-1]='\0';	
+		buffer_path[strlen(buffer_path)]='\0';	
 		fclose(path_anterior);//se cierra el archivo
 		///******************************************************************************
 		//strcpy(entrada,token); // se copia la entrada de datos ya parseada
-		printf("Entrada:  %s\n",entrada );
-		printf("Entrada len:  %d\n",strlen(entrada));
-		printf("buffer_path len:  %d\n",strlen(buffer_path) );
+		// printf("Entrada:  %s\n",entrada );
+		// printf("Entrada len:  %d\n",strlen(entrada));
+		// printf("buffer_path len:  %d\n",strlen(buffer_path) );
 
 		for (k=0; k<strlen(entrada);k++) if (entrada[k]=='+')entrada[k]=' '; // Se reemplazan los "+" por espacios	
 		memset(posicion, '\0', BUFFSIZE );
@@ -172,21 +163,31 @@ int main(void) {
 	if ( child_pid == 0 ) {  // Proceso hijo
 		/// Se desvia el STDOUT al archivo salida_pantalla.txt
 		dup2(fd2, WRITE);
-		if(strcmp(argumentos[0],"cd")==0){ // se fija si es el comando cd
-			if(chdir(argumentos[1])==-1){
-				printf("No existe el fichero ó directorio \n");
+		if(strlen(buffer_path)!=0){ // se cambia el path si existe
+			if(chdir(buffer_path)==-1){
+				// printf("No existe el fichero o directorio \n");
 			}
 
-			//************************
-
-			write(path_nuevo, argumentos[1],strlen(argumentos[1]));
-
-			printf("path: %s\n", argumentos[1]);
+		}
 		
-			//************************
+		if(strcmp(argumentos[0],"cd")==0){ // se fija si es el comando cd
+			if(chdir(argumentos[1])==-1){
+				printf("No existe el fichero o directorio \n");
+			}else{
+				//************************
 
-			char *const parmList[] = {"/bin/echo", NULL};
-			execv ("/bin/echo", parmList);
+				memset(buffer_path, '\0', BUFFSIZE );
+				strcpy(buffer_path,argumentos[1]); // se reemplaza el path por el nuevo
+				// write(path_nuevo, argumentos[1],strlen(argumentos[1]));
+
+				// printf("path: %s\n", argumentos[1]);
+			
+				//************************
+			}
+
+				char *const parmList[] = {"/bin/echo", NULL};
+				execv ("/bin/echo", parmList);
+		
 		}
 		
 		else{
@@ -251,7 +252,7 @@ int main(void) {
 			}
 		}
 	}
-	// write(path_nuevo, argumentos[1],strlen(argumentos[1]));
+	write(path_nuevo, buffer_path,strlen(buffer_path)); /// se guarda el path actual
 	close(path_nuevo);//se cierra el archivo
 	close(fd2);//se cierra el archivo
 	FILE *salida_baash; 						
