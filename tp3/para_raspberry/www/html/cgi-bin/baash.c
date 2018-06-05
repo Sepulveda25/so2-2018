@@ -125,7 +125,7 @@ int main(void) {
 		//Se obtiene el nombre de Host
 		gethostname(hostname, BUFFSIZE+1);
 		//Se obtiene el nombre de usuario
-		getlogin_r(nombre,sizeof(nombre));
+		cuserid(nombre);
 		
 		if(strlen(buffer_path)==0){
 			printf("%s@%s:%s$ %s \n",nombre,hostname, posicion,entrada);

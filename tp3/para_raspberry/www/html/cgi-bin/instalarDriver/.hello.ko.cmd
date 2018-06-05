@@ -1,0 +1,1 @@
+cmd_/var/www/html/cgi-bin/instalarDriver/hello.ko := ld -r -m elf_i386 -T ./scripts/module-common.lds --build-id  -o /var/www/html/cgi-bin/instalarDriver/hello.ko /var/www/html/cgi-bin/instalarDriver/hello.o /var/www/html/cgi-bin/instalarDriver/hello.mod.o
